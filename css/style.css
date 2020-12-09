@@ -1,0 +1,587 @@
+@import url('https://fonts.googleapis.com/css2?family=Prata&display=swap');
+
+body.my-travel-sessions-map .tdb_header_logo,
+body.my-travel-sessions-map .tdc-footer-wrap {
+  display: none;
+}
+
+body.my-travel-sessions-map-sc .td-main-content {
+  width: 100%;
+}
+body.my-travel-sessions-map-sc .td-main-sidebar {
+  display: none;
+}
+
+body #trss-map-page {
+  font-family: "Prata", sans-serif;
+  position: relative;
+  width: 100vw;
+  margin-left: -50vw;
+  left: 50%;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+body #trss-map-page *:focus {
+  outline: none;
+}
+
+body #map {
+  position: relative;
+  width: 100%;
+  min-height: 950px;
+}
+
+body #trss-map-page ul li, body #trss-map-page ol li {
+  margin: 0;
+  line-height: normal;
+}
+
+.card {
+  padding: 10px;
+  font-family:  'Prata', serif;;
+  position: absolute;
+  width: 215px;
+  left:0;
+  top:10px;
+  height: 70px;
+  background-color: #ffffff;
+  border-width: 0px;
+  color: #0071A4;
+  border-radius: 0px 20px 0px 0px;
+  text-align:left;
+  transition: left 0.5s;
+  /* padding-left:30px; */
+  font-size:20px;
+ cursor: pointer;
+}
+
+.c2 {
+  left:215px;
+  background-color: #e8e8e8;
+  border-width: 0px;
+  color: #0071A4;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.map-console2 {
+  padding: 20px;
+  font-family:  'Prata', serif;;
+  position: absolute;
+  width: 430px;
+  left:0;
+  top:60px;
+  height: 480px;
+  background-color: #e8e8e8;
+  border-width: 0px;
+  color: #0071A4;
+  border-radius: 0px 20px 20px 0px;
+  text-align:left;
+  transition: left 0.5s;
+  padding-left:30px;
+  z-index: 99;
+}
+
+.map-console {
+  padding: 10px;
+  font-family:  'Prata', serif;;
+  position: absolute;
+  width: 430px;
+  left:0;
+  top:60px;
+  height: 400px;
+  background-color: #ffffff;
+  border-width: 0px;
+  color: #0071A4;
+  border-radius: 0px 20px 20px 0px;
+  text-align:left;
+  transition: left 0.5s;
+  padding-left:30px;
+  z-index: 99;
+}
+
+.map-sub-console {
+  padding: 20px;
+  font-family:  'Prata', serif;;
+  position: absolute;
+  width: 430px;
+  left:0;
+  top:60px;
+  height: 480px;
+  background-color: #ffffff;
+  border-width: 0px;
+  color: #0071A4;
+  border-radius: 0px 20px 20px 0px;
+  text-align:left;
+  transition: top 0.5s;
+  padding-left:30px;
+
+}
+
+.button {
+  margin-top:15px;
+  background-color: #0071A4;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  border-radius: 2px;
+}
+
+body #trss-map-page h1 {
+  margin-top: 10px;
+  font-size: 17px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-family: "Prata", sans-serif;
+  line-height: 1.2;
+}
+
+body #trss-map-page h2 {
+  font-size: 16px;
+  text-transform:uppercase;
+  margin-top: 15px;
+  color: #969696;
+  font-weight: 500;
+  font-family: "Prata", sans-serif;
+  line-height: 1.2;
+}
+
+#or{
+ font-size: 14px;
+}
+#saveButton{
+  cursor: pointer;
+}
+
+body #trss-map-page h3 {
+  font-size: 10px;
+  margin-bottom: 20px;
+   margin-top: 20px;
+  line-height: 20px;
+  color: #969696;
+  font-weight: 500;
+  font-family: "Prata", sans-serif;
+}
+
+body #trss-map-page h4 {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: "Prata", sans-serif;
+  line-height: 1.2;
+}
+
+body #trss-map-page h5 {
+  font-size: 50px;
+  margin-top: 30px;
+  line-height: 20px;
+  margin-bottom: 25px;
+  font-weight: 500;
+  font-family: "Prata", sans-serif;
+}
+
+body #trss-map-page .loader {
+    margin: -10px 0 0 -250px;
+    height: 100px;
+    width: 20%;
+    position: absolute;
+    text-align: center;
+    padding: 1em;
+    top: 35%;
+    left: 40%;
+    margin: 0 auto 1em;
+}
+
+.myGallery img {
+   height:33px;
+   margin-right:10px;
+   margin-bottom: 0;
+   display: unset;
+}
+
+body #trss-map-page .question-box{
+  margin-top:15px;
+  height: 460px;
+  overflow-y:overlay;
+ color: #969696;
+  text-transform:uppercase;
+  font-size: 12px;
+}
+
+body #trss-map-page .question{
+  color: #969696;
+  text-transform:uppercase;
+  font-size: 12px;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions {
+  background-color: #fff;
+  border-radius: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  top: 0%!important;
+  overflow: hidden;
+  font-size: 10px;
+}
+
+.mapboxgl-ctrl-geocoder--input {
+  height: 26px!important;
+  border: none !important;
+  font-size: 16px !important;
+  line-height: normal !important;
+  color: rgba(0, 0, 0, 0.75) !important;
+  padding: 6px 6px 6px 35px !important;
+}
+
+.mapboxgl-ctrl-geocoder--icon {
+  top: 3px!important;
+}
+
+.mapboxgl-ctrl-geocoder {
+  margin-left: 55px!important;
+}
+
+.dropdown-menu{
+  max-height:300px;
+  overflow-y:scroll;
+}
+
+.mapboxgl-popup-content {
+  border-radius: 0.4rem;
+  padding: 2px 10px 10px 10px;
+  text-align: center;
+  font-family: "Barlow", sans-serif;
+  color: #ffffff;
+  background-color: #000000;
+}
+
+.mapboxgl-popup .mapboxgl-popup-tip {
+  opacity: 0;
+}
+
+.dot-legend{
+  margin-right:10px;
+}
+
+#dot1{
+  color:#E45B3E
+}
+
+#dot2{
+  color:#F7A155
+}
+
+#dot3{
+  color:#F7D267
+}
+
+#dot4{
+  color:#019384
+}
+
+#dot5{
+  color:#7915d4
+}
+
+#dot6{
+  color:#2bd4ec
+}
+
+#open-panel{
+  width:80%;
+  margin-top:30px;
+}
+
+#favorite-title{
+    text-transform:capitalize;
+    color: #0071A4;
+    float:left;
+}
+
+body #trss-map-page #arrow-mobile{
+ width:10px;
+  font-size:25px;
+  color: #0071A4;
+  margin:0px 0px 0px 340px;
+  cursor: pointer;
+}
+
+.btn-secondary img {
+    display: block;
+    height: 30px;
+    width: 30px;
+    margin: 0;
+}
+
+.btn-secondary {
+   width:55px;
+   height: 70px;
+   background-color:#ffffff;
+   border-color:#e8e8e8;
+   border-width:2px;
+   font-size:0px;
+   border-radius:10px;
+}
+#selectedLayer{
+  margin-top:25px;
+  font-size:17px;
+}
+
+:root {
+  --body_gradient_left: #ffffff;
+  --body_gradient_right: #ffffff;
+  --form_bg: #ffffff;
+  --input_bg: #E5E5E5;
+  --input_hover: #eaeaea;
+  --submit_bg: #0071a4;
+  --submit_hover: #0071a4;
+  --icon_color: #6b6b6b;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: unset;
+  display: block;
+  font-family: 'Roboto', sans-serif;
+  background-image: linear-gradient(to right, var(--body_gradient_left), var(--body_gradient_right));
+}
+
+#form_wrapper {
+  width: 1000px;
+  height: 700px;
+  /* this will help us center it*/
+  margin: auto;
+  background-color: var(--form_bg);
+  border-radius: 50px;
+  /* make it a grid container*/
+  display: grid;
+  /* with two columns of same width*/
+  grid-template-columns: 1fr 1fr;
+  /* with a small gap in between them*/
+  grid-gap: 5vw;
+  /* add some padding around */
+  padding: 5vh 15px;
+}
+
+#form_left {
+  /* center the image */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#form_left img {
+  width: 350px;
+  height: 350px;
+}
+
+#form_right {
+  display: grid;
+  /* single column layout */
+  grid-template-columns: 1fr;
+  /* have some gap in between elements*/
+  grid-gap: 10px;
+  padding: 0% 18%;
+  margin-bottom:20px;
+}
+
+body #trss-map-page h1,
+span {
+  text-align: center;
+}
+
+.input_container {
+  background-color: var(--input_bg);
+  /* vertically align icon and text inside the div*/
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.input_container:hover {
+  background-color: var(--input_hover);
+}
+
+.input_container,
+#input_submit {
+  height: 30px;
+  /* make the borders more round */
+  border-radius: 30px;
+  width: 100%;
+}
+
+.input_field {
+  /* customize the input tag with lighter font and some padding*/
+  color: var(--icon_color);
+  background-color: inherit;
+  width: 90%;
+  border: none;
+  font-size: 1.0rem;
+  font-weight: 400;
+  padding-left: 30px;
+}
+
+.input_field:hover,
+.input_field:focus {
+  /* remove the outline */
+  outline: none;
+}
+
+#input_submit {
+  /* submit button has a different color and different padding */
+  background-color: var(--submit_bg);
+  padding-left: 0;
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+}
+
+#input_submit:hover {
+  background-color: var(--submit_hover);
+  /* simple color transition on hover */
+  transition: background-color,
+      1s;
+  cursor: pointer;
+}
+
+/* shift it a bit lower */
+#create_account {
+  display: block;
+  position: relative;
+  top: 30px;
+}
+
+body #trss-map-page a {
+  /* remove default underline */
+  text-decoration: none;
+  color: var(--submit_bg);
+  font-weight: bold;
+}
+
+body #trss-map-page a:hover {
+  color: var(--submit_hover);
+}
+
+body #trss-map-page i {
+  color: var(--icon_color);
+}
+@media screen and (max-width:767px) {
+  body.my-travel-sessions-map .tdb_header_logo {
+    display: block;
+  }
+
+  a#td-header-search-button::after {
+    display: none;
+  }
+
+  body .td-mobile-footer-wrap,
+  body .td-mobile-sub-footer-wrap {
+    display: none;
+  }
+}
+@media screen and (max-width:600px) {
+    body #trss-map-page {
+      /* height: 100vh; */
+      height: calc(58vh + 390px + 480px);
+    }
+    body #map {
+      min-height: 400px;
+      height: 60vh;
+    }
+    body #trss-map-page .loader {
+      top: 30vh;
+    }
+
+    .card {
+      padding: 5px;
+      width: 50%;
+      /* top:660px; */
+      top: 58vh;
+      height: 70px;
+      color: #0071A4;
+      border-radius: 20px 20px 0px 0px;
+      z-index: 3;
+    }
+
+    .c2 {
+      left:50%;
+      border-radius: 20px 20px 0px 0px;
+    }
+
+    body #trss-map-page h1{
+        font-size:15px;
+    }
+
+    .map-console2 {
+      padding: 30px;
+      width: 100%;
+      /* top:700px; */
+      top: calc(58vh + 40px);
+      height: 390px;
+      border-radius: 0px 0px 0px 0px;
+    }
+
+    .map-console {
+      padding: 30px;
+      width: 100%;
+      /* top:700px; */
+      top: calc(58vh + 40px);
+      height: 390px;
+      border-radius: 0px 0px 0px 0px;
+    }
+
+    .map-sub-console {
+      padding: 30px;
+      width: 100%;
+       /* top:1050px; */
+      top: calc(58vh + 390px);
+      height: 450px;
+      border-radius: 0px 0px 20px 20px;
+      box-shadow: 0 0 10px 2px rgba(0,0,0,.1);
+    }
+
+    .btn-secondary img {
+        display: block;
+        height: 30px;
+        width: 30px;
+    }
+
+    .btn-secondary {
+       padding:6px;
+       width:45px;
+       height: 70px;
+       background-color:#ffffff;
+       border-color:#e8e8e8;
+       border-width:2px;
+       font-size:0px;
+       border-radius:10px;
+    }
+
+    .mapboxgl-ctrl-geocoder {
+        margin-left: 55px!important;
+        width:75%!important
+    }
+
+    #favorite-title{
+      display:none;
+    }
+
+    body #trss-map-page h3{
+      margin-top:0px
+    }
+
+    body #trss-map-page #arrow-mobile{
+      display:none;
+    }
+}
