@@ -12,7 +12,7 @@ body.my-travel-sessions-map-sc .td-main-sidebar {
   display: none;
 }
 
-body #trss-map-page {
+/* body #trss-map-page {
   font-family: "Prata", sans-serif;
   position: relative;
   width: 100vw;
@@ -24,20 +24,20 @@ body #trss-map-page {
 
 body #trss-map-page *:focus {
   outline: none;
-}
+} */
 
-body #map {
+/* body #map {
   position: relative;
   width: 100%;
   min-height: 950px;
-}
+} */
 
 body #trss-map-page ul li, body #trss-map-page ol li {
   margin: 0;
   line-height: normal;
 }
 
-.card {
+/* .card {
   padding: 10px;
   font-family:  'Prata', serif;;
   position: absolute;
@@ -51,9 +51,8 @@ body #trss-map-page ul li, body #trss-map-page ol li {
   border-radius: 0px 20px 0px 0px;
   text-align:left;
   transition: left 0.5s;
-  /* padding-left:30px; */
   font-size:20px;
- cursor: pointer;
+  cursor: pointer;
 }
 
 .c2 {
@@ -62,9 +61,9 @@ body #trss-map-page ul li, body #trss-map-page ol li {
   border-width: 0px;
   color: #0071A4;
   border-radius: 20px 20px 0px 0px;
-}
+} */
 
-.map-console2 {
+/* .map-console2 {
   padding: 20px;
   font-family:  'Prata', serif;;
   position: absolute;
@@ -116,7 +115,7 @@ body #trss-map-page ul li, body #trss-map-page ol li {
   transition: top 0.5s;
   padding-left:30px;
 
-}
+} */
 
 .button {
   margin-top:15px;
@@ -167,12 +166,12 @@ body #trss-map-page h3 {
   font-family: "Prata", sans-serif;
 }
 
-body #trss-map-page h4 {
+/* body #trss-map-page h4 {
   font-size: 20px;
   font-weight: 500;
   font-family: "Prata", sans-serif;
   line-height: 1.2;
-}
+} */
 
 body #trss-map-page h5 {
   font-size: 50px;
@@ -195,14 +194,14 @@ body #trss-map-page .loader {
     margin: 0 auto 1em;
 }
 
-.myGallery img {
+/* .myGallery img {
    height:33px;
    margin-right:10px;
    margin-bottom: 0;
    display: unset;
-}
+} */
 
-body #trss-map-page .question-box{
+/* body #trss-map-page .question-box{
   margin-top:15px;
   height: 460px;
   overflow-y:overlay;
@@ -215,7 +214,7 @@ body #trss-map-page .question{
   color: #969696;
   text-transform:uppercase;
   font-size: 12px;
-}
+} */
 
 .mapboxgl-ctrl-geocoder .suggestions {
   background-color: #fff;
@@ -230,22 +229,22 @@ body #trss-map-page .question{
   font-size: 10px;
 }
 
-.mapboxgl-ctrl-geocoder--input {
+/* .mapboxgl-ctrl-geocoder--input {
   height: 26px!important;
   border: none !important;
   font-size: 16px !important;
   line-height: normal !important;
   color: rgba(0, 0, 0, 0.75) !important;
   padding: 6px 6px 6px 35px !important;
-}
+} */
 
 .mapboxgl-ctrl-geocoder--icon {
   top: 3px!important;
 }
 
-.mapboxgl-ctrl-geocoder {
+/* .mapboxgl-ctrl-geocoder {
   margin-left: 55px!important;
-}
+} */
 
 .dropdown-menu{
   max-height:300px;
@@ -558,14 +557,14 @@ body #trss-map-page i {
     }
 
     .btn-secondary {
-       padding:6px;
-       width:45px;
-       height: 70px;
-       background-color:#ffffff;
-       border-color:#e8e8e8;
-       border-width:2px;
-       font-size:0px;
-       border-radius:10px;
+      padding:6px;
+      width:45px;
+      height: 70px;
+      background-color:#ffffff;
+      border-color:#e8e8e8;
+      border-width:2px;
+      font-size:0px;
+      border-radius:10px;
     }
 
     .mapboxgl-ctrl-geocoder {

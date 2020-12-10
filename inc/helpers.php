@@ -52,44 +52,50 @@ function trss_plugin_footer_import_css_javascript() {
 function tsm_favo_list_search_html() {
     $favo_list_search = [
         [
+            'key' => 's0',
             'id' => 'search0',
             'class' => '_s0',
-            'icon' => 'icons-01.png',
+            'icon' => TRSSMAP_URI . 'img/icons-01.png',
             'label' => 'Favorite City for Things to Do',
             'slug' => 'favorite-city-for-things-to-do',
         ],
         [
+            'key' => 's1',
             'id' => 'search1',
             'class' => '_s1',
-            'icon' => 'icons-02.png',
+            'icon' => TRSSMAP_URI . 'img/icons-02.png',
             'label' => 'Favorite City for Nightlife',
             'slug' => 'favorite-city-for-nightlife',
         ],
         [
+            'key' => 's2',
             'id' => 'search2',
             'class' => '_s2',
-            'icon' => 'icons-03.png',
+            'icon' => TRSSMAP_URI . 'img/icons-03.png',
             'label' => 'Favorite City for Food',
             'slug' => 'favorite-city-for-food',
         ],
         [
+            'key' => 's3',
             'id' => 'search3',
             'class' => '_s3',
-            'icon' => 'icons-04.png',
+            'icon' => TRSSMAP_URI . 'img/icons-04.png',
             'label' => 'City where you spend the least',
             'slug' => 'city-where-you-spend-the-least',
         ],
         [
+            'key' => 's4',
             'id' => 'search4',
             'class' => '_s4',
-            'icon' => 'icons-05.png',
+            'icon' => TRSSMAP_URI . 'img/icons-05.png',
             'label' => 'City You Feel the Safest',
             'slug' => 'city-you-feel-the-safest',
         ],
         [
+            'key' => 's5',
             'id' => 'search5',
             'class' => '_s5',
-            'icon' => 'icons-06.png',
+            'icon' => TRSSMAP_URI . 'img/icons-06.png',
             'label' => 'Top Bucket List City',
             'slug' => 'top-bucket-list-city',
         ],
@@ -308,3 +314,8 @@ function tsm_get_fav_city_by_cat( $slug = '' ) {
         return $item;
     }, $result ) : [];
 } 
+
+function tsm_svg_icon( $name ) {
+    $icons = require( TRSSMAP_DIR . '/inc/svg.php' );
+    return ( $icons[ $name ] ) ? $icons[ $name ] : __( 'Not support icon "' . $name . '"!' );
+}

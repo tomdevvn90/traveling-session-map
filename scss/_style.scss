@@ -1,3 +1,22 @@
+#trss-map-page {
+  position: relative;
+  
+  .map-tools-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9;
+  }
+
+  #map,
+  #traveling-session-map {
+    position: relative;
+    width: calc(100% - 400px);
+    margin-left: 400px;
+    min-height: 100vh;
+  }
+}
+
 #Fav-City-List {
 
   .__fav-city-item {
@@ -127,3 +146,39 @@ body {
 /**
  * END Maxbox Style
  */
+
+.__is-toggle {
+
+  .__toggle-heading {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    .arrow-toggle {
+      display: flex;
+      width: 12px;
+      height: 12px;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+
+      svg {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+  .__toggle-content {
+    display: none;
+  }
+
+  &.__is-open {
+    
+    .__toggle-content {
+      display: block;
+    }
+  }
+}

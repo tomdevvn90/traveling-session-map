@@ -1,0 +1,226 @@
+.map-tools-container {
+  width: 400px;
+  max-width: 100%;
+  line-height: 1.5em;
+  background: white;
+  height: 100%;
+
+  p {
+    color: #444;
+  }
+
+  p.short-desc {
+    font-size: 12px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: black;
+  }
+
+  #saveButton {
+    background: #3039b9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .sub-heading {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .total-states-selected {
+    font-size: 26px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F44336;
+    color: #fff;
+    border-radius: 50px;
+    box-shadow: 3px 3px 10px 0 #f443367a;
+  }
+
+  .tab-heading {
+    display: flex;
+    border: solid #eee;
+    border-width: 1px 1px 0 1px;
+    
+    .card {
+      width: 50%;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eee;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        border-right: 1px solid #eee;
+      }
+
+      h4 {
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        margin: 0;
+        color: #b9b9b9;
+      }
+
+      &.active {
+        background: white;
+        
+        h4 {
+          color: black;
+        }
+      }
+    }
+  }
+
+  .tab-body {
+    border: solid #eee;
+    border-width: 0 1px 1px 1px;
+    padding: 10px;
+    height: calc(100% - 50px);
+    overflow: hidden;
+
+    .__tab-item {
+      max-height: 100%;
+      overflow: auto;
+      padding: 0 10px;
+      display: none;
+
+      &.__is-active {
+        display: block;
+      }
+    }
+  }
+}
+
+.dashboardcode-bsmultiselect {
+
+  .form-control {
+    padding: 10px;
+    border: solid 1px #eee;
+    border-radius: 1px;
+
+    li.badge {
+      padding: 5px 21px 5px 5px !important;
+      background: #607D8B;
+      color: #fff;
+      font-size: 14px;
+      margin: 0 5px 5px 0 !important;
+      line-height: normal !important;
+      border-radius: 3px;
+      position: relative;
+
+      .close {
+        border: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        background: #4f6a77;
+        color: #fff;
+        width: 15px;
+        border-radius: 0 3px 3px 0;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    max-height: 300px;
+    overflow-y: scroll;
+    background: white;
+    z-index: 9;
+    width: 260px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 0 rgba(1,1,1,.1);
+
+    > li {
+      
+      > .custom-checkbox {
+        padding: 10px;
+        border-bottom: solid 1px #eee;
+        font-size: 12px;
+      }
+
+      input {
+        margin-right: 6px;
+        display: inline-flex;
+        vertical-align: middle;
+
+        + label {
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+.fav-city-container {
+
+  .sub-heading {
+    margin-top: 17px;
+  }
+
+  .question-box {
+    border: solid #eee;
+    border-width: 0 1px;
+    background: #fafafa;
+
+    .__fav-item {
+      display: block;
+      padding: 10px;
+      border-bottom: solid 1px #eee;
+
+      &:first-child {
+        border-top: solid 1px #eee;
+      }
+    }
+
+    .myGallery {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      img {
+        width: 30px;
+        height: auto;
+        margin-left: 10px;
+      }
+
+      > span {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: bold;
+      }
+    }
+
+    .mapboxgl-ctrl-geocoder {
+      margin: 0;
+      width: 100%;
+      max-width: none;
+      box-shadow: none;
+      position: relative;
+
+      &--icon-search {
+        position: absolute;
+        left: 5px;
+        top: 50% !important;
+        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+      }
+
+      &--input {
+        padding-left: 28px;
+        border-radius: 3px;
+      }
+    }
+  }
+}
