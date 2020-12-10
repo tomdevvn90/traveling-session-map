@@ -38,13 +38,7 @@
         "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.8, 0.001],
       },
       'fill-opacity': 0.4,
-    },
-    // {
-    //   id: 'WorldCountriesGlobalTrends',
-    //   type: 'fill',
-    //   source: 'states',
-    //   layout: {},
-    // },
+    }
   ]
 
   let Map = new mapboxgl.Map( {
@@ -54,18 +48,22 @@
     zoom: MapZoom,
   } );
 
+  const LoadStateMapData = async () => {
+    const Result = await $.get( TRSS_MAP_OBJ.mapbox_world_countries_json_url )
+    return JSON.parse( Result )
+  }
+
   const MapInit = async () => {
     /**
      * Hide loader
      */
     $( '.loader' ).hide()
 
-    const LoadStateMapData = async () => {
-      const Result =  await $.get( TRSS_MAP_OBJ.mapbox_world_countries_json_url )
-      return JSON.parse( Result )
-    }
+    /**
+     * Get data
+     */
     const StateData = await LoadStateMapData()
-
+    
     /**
      * Add Source
      */
@@ -103,6 +101,7 @@
     }
     Map.on( 'click', 'WorldCountries', SelectCountry )
   }
+
   Map.on( 'load', MapInit )
 
   /**
