@@ -13,13 +13,16 @@
   <select name="states" id="Map-State" class="form-control"  multiple="multiple" style="display: none;">
     <? load_template( TRSSMAP_DIR . '/templates/state-options.php', false ); ?>
   </select>
-  <hr style="margin-top: 25px" />
+  <hr style="margin: 25px 0 0 0" />
   <div class="fav-city-container __is-toggle">
-    <h4 class="sub-heading __toggle-heading"><?= __( 'Favorites Cities ⭐' ) ?> <span class="arrow-toggle"><?= tsm_svg_icon( 'arrow-down' ) ?></span></h4>
+    <h4 class="sub-heading __toggle-heading">
+      <span><?= __( 'Favorites Cities ⭐' ) ?></span> 
+      <span class="arrow-toggle"><?= tsm_svg_icon( 'arrow-down' ) ?></span>
+    </h4>
     <div class="question-box __toggle-content">
       <? tsm_favo_list_search_html() ?>
     </div>
   </div> 
-  <hr style="margin-top: 16px" />
+  <hr style="margin: 16px 0 0 0" />
   <button id="saveButton" class="button button4"><?= __( 'Save' ) ?></button>
 </div>

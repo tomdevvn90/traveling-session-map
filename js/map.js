@@ -19,6 +19,9 @@
   let FavoriteCity = {}
   let FavCityFilterMarker = []
   
+  /**
+   * Map
+   */
   let MapToolsWrap = $( '.map-tools-container' )
   let MapCenter = [-53.842, 34.691];
   let MapZoom = 1.95;
@@ -45,8 +48,8 @@
   ]
 
   let Map = new mapboxgl.Map( {
-    container: 'traveling-session-map', // container id
-    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+    container: 'traveling-session-map', 
+    style: 'mapbox://styles/mapbox/streets-v11', 
     center: MapCenter,
     zoom: MapZoom,
   } );
@@ -68,7 +71,7 @@
      */
     Map.addSource( 'states', {
       'type': 'geojson',
-      'data': StateData // TRSS_MAP_OBJ.mapbox_world_countries_json_url
+      'data': StateData
     } )
 
     /**
@@ -107,7 +110,7 @@
    */
   const MapToolsControlTab = () => {
     MapToolsWrap.on( {
-      '__onChange:Tab' ( e, func ) { console.log( e, func )
+      '__onChange:Tab' ( e, func ) {
         MapToolsWrap.onChangeTabCallback = MapToolsWrap.onChangeTabCallback || []
         MapToolsWrap.onChangeTabCallback.push( func )
       }
@@ -129,7 +132,7 @@
         .removeClass( '__is-active' )
 
       /**
-       * Callback
+       * Callback 
        */
       if( MapToolsWrap.onChangeTabCallback && MapToolsWrap.onChangeTabCallback.length ) {
         MapToolsWrap.onChangeTabCallback.map( func => {
@@ -145,14 +148,28 @@
    * Changed tab is My Travels
    */
   const isMyTravelsTabHandle = () => {
+    Map.setLayoutProperty( 'WorldCountries', 'visibility' )
 
+    $( '.__mapbox-geocode-field-container' ).each( function() {
+      let Marker = $( this ).data( 'marker' )
+      if( ! Marker ) return 
+
+      $( Marker._element ).css( 'display', 'block' )
+    } )
   }
 
   /**
    * Changed tab is Global Trends
    */
   const isGlobalTrendsTabHandle = () => {
+    Map.setLayoutProperty( 'WorldCountries', 'visibility', 'none' )
+    
+    $( '.__mapbox-geocode-field-container' ).each( function() {
+      let Marker = $( this ).data( 'marker' )
+      if( ! Marker ) return 
 
+      $( Marker._element ).css( 'display', 'none' )
+    } )
   }
 
   const SelectMapStateUI = () => {
@@ -227,8 +244,6 @@
       Container.data( 'geocoder-obj', Geocoder )
       GeoCoderFields.push( Geocoder )
     } )
-
-    console.log( GeoCoderFields )
   }
 
   /**
@@ -274,11 +289,16 @@
 
   const Save = () => {
 
-    const _SaveLocal = ( button ) => {
+    const _SaveLocal = async ( button ) => {
+      let CacheDataMap = { CountrySelected, FavoriteCity }
+      localStorage.setItem( 'CacheDataMap', JSON.stringify( CacheDataMap ) )
 
+      button.text( 'Saving...' )
+      await _SaveDB( CacheDataMap )
+      button.text( 'SAVE' )
     }
 
-    const _SaveDB = () => {
+    const _SaveDB = async ( Data ) => {
 
     }
 
@@ -287,7 +307,6 @@
       let button = $( this )
 
       _SaveLocal( button )
-      _SaveDB( button )
     } )
   }
 

@@ -1,5 +1,6 @@
 /**
  * Traveling Session Map Script
+ * 
  */
 
 import './map'
