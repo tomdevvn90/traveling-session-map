@@ -1,7 +1,7 @@
 const path = require( 'path' )
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     frontend: [ './js/main.js' ],
   },
@@ -23,9 +23,14 @@ module.exports = {
         ],
       },
       {
-        test: /\.(js)$/,
-        exclude: /node_modules/,
-        use: [ 'babel-loader' ]
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -36,5 +41,5 @@ module.exports = {
         ],
       },
     ]
-  }
+  },
 }

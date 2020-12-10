@@ -157,7 +157,7 @@
       $( Marker._element ).css( 'display', 'block' )
     } )
   }
-
+ 
   /**
    * Changed tab is Global Trends
    */
