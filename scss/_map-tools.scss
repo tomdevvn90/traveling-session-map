@@ -194,6 +194,7 @@
         width: 30px;
         height: auto;
         margin-left: 10px;
+        margin-bottom: 0;
       }
 
       > span {
@@ -241,6 +242,8 @@
     line-height: 0;
     padding: 8px;
     outline: none;
+    width: calc(100% / 7);
+    height: auto;
     transition: .3s ease;
     -webkit-transition: .3s ease;
 
@@ -251,6 +254,7 @@
     img {
       width: 100%;
       margin: 0;
+      height: auto;
     }
 
     &.__is-active {

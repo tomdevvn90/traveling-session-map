@@ -117,6 +117,7 @@
      * Hide loader
      */
     $( '.loader' ).hide()
+    $( '#trss-map-page' ).removeClass( '__lock-init' )
   }
 
   Map.on( 'load', MapInit )
@@ -291,12 +292,6 @@
   }
 
   const MakeMarker = ( data, dataUI ) => {
-    // let el = document.createElement( 'div' )
-    // el.className = 'marker'
-    // el.style.backgroundImage = `url(${ dataUI.Icon })`
-    // el.style.backgroundSize = `100%`
-    // el.style.width = 40 + 'px'
-    // el.style.height = 40 + 'px'
     let el = BuildMarkerUI( {
       icon: dataUI.Icon,
     } )
@@ -564,12 +559,28 @@
     } )
   }
 
+  const ToggleMapToolsMobile = () => {
+    $( '.button-toggle-map-tools-on-mobile' ).on( 'click', function( e ) {
+      e.preventDefault()
+      let SVG = $( this ).children( 'svg' )
+
+      SVG.toggleClass( 'active' )
+
+      if( SVG.hasClass( 'active' ) ) {
+        $( '#trss-map-page' ).addClass( '__map-tools-mobile-show' )
+      } else {
+        $( '#trss-map-page' ).removeClass( '__map-tools-mobile-show' )
+      }
+    } )
+  }
+
   /**
    * Ready
    */
   const Ready = () => {
     MapTools()
     Save()
+    ToggleMapToolsMobile()
   }
 
   /**
