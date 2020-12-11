@@ -22,7 +22,7 @@
   .__fav-city-item {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-radius: 3px;
     border: solid 1px #cecece;
     padding: 10px;
@@ -76,9 +76,10 @@
 
       .city-name {
         font-size: 16px;
+        line-height: 1.5em;
         font-weight: bold;
         color: #000;
-        margin: 0 0 5px;
+        margin: 0 0 2px;
         text-decoration: underline;
         font-family: Arial;
       }
@@ -86,7 +87,7 @@
       .entry-meta {
         display: flex;
         flex-wrap: wrap;
-        font-size: 14px;
+        font-size: 12px;
         color: #555;
 
         .__by {
@@ -141,6 +142,19 @@ body {
   .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
     border-top-color: transparent;
     border-right-color: black;
+  }
+
+  .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+    border-top-color: transparent;
+    border-bottom-color: black;
+  }
+
+  .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
+    border-bottom-color: black;
+  }
+
+  .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+    border-bottom-color: black;
   }
 }
 /**

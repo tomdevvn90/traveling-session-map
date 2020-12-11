@@ -18,6 +18,8 @@
   let CountrySelected = []
   let FavoriteCity = {}
   let FavCityFilterMarker = []
+  let FavCityFilterCache = {}
+  let FavCityListContainer = null
   
   /**
    * Map
@@ -55,9 +57,9 @@
 
   const MapInit = async () => {
     /**
-     * Hide loader
+     * Set
      */
-    $( '.loader' ).hide()
+    FavCityListContainer = $( '#Fav-City-List' )
 
     /**
      * Get data
@@ -100,9 +102,98 @@
       UpdateTotalCountriesNumber()
     }
     Map.on( 'click', 'WorldCountries', SelectCountry )
+
+    /**
+     * Load map data init
+     */
+    await LoadInit()
+
+    /**
+     * Filter 
+     */
+    $( '._fav-filter-item' ).on( 'click', FavCityFilter )
+
+    /**
+     * Hide loader
+     */
+    $( '.loader' ).hide()
   }
 
   Map.on( 'load', MapInit )
+
+  /**
+   * Load data init
+   */
+  const LoadDataInit = async () => {
+    let Country = []
+    let Favorite = {}
+
+    /**
+     * load data by localStorage
+     */
+    const CacheDataMap_String = localStorage.getItem( 'CacheDataMap' )
+    if( CacheDataMap_String ) {
+      const CacheDataMap = JSON.parse( CacheDataMap_String )
+      Country = CacheDataMap.CountrySelected
+      Favorite = CacheDataMap.FavoriteCity
+    } 
+
+    /**
+     * Load data by DB
+     */
+    const Result = await $.ajax( {
+      type: 'POST',
+      url: TRSS_MAP_OBJ.ajax_url,
+      data: {
+        action: 'tsm_ajax_load_user_map_data',
+      },
+      error ( e ) {
+        console.log( e )
+      }
+    } )
+
+    if( Result.data.CountrySelected ) {
+      Country = Result.data.CountrySelected.map( ( StateID ) => { return parseInt( StateID ) } )
+    }
+
+    if( Result.data.FavoriteCity ) {
+      Favorite = Result.data.FavoriteCity
+    }
+    
+    return { Country, Favorite };
+  }
+
+  const LoadInit = async () => {
+    // Reset
+    // localStorage.removeItem( 'CacheDataMap' )
+
+    const { Country, Favorite } = await LoadDataInit()
+    CountrySelected = Country
+    FavoriteCity = Favorite
+
+    // Load country selected
+    if( CountrySelected.length ) {
+      // Update select
+      $( 'select[name=states][multiple=multiple]' ).val( CountrySelected ).trigger( 'change' )
+      
+      // Update map
+      CountrySelected.map( ( StateID ) => {  
+        Map.setFeatureState({ source: 'states', id: StateID }, { hover: true });
+      } )
+    }
+
+    // Load favorite
+    if( Object.keys( FavoriteCity ).length ) {
+      // console.log( FavoriteCity )
+      Object.keys( FavoriteCity ).map( ( key ) => {
+        let data =  FavoriteCity[ key ]
+        $( `.__mapbox-geocode-field-container[data-item-key=${ key }]` ).trigger( '__MakeMarkerDefault:MyFav', [ data ] )
+      } )
+    }
+    
+    // Update number state selected
+    UpdateTotalCountriesNumber()
+  }
 
   /**
    * Map Tools control
@@ -155,8 +246,17 @@
 
       $( Marker._element ).css( 'display', 'block' )
     } )
+
+    /**
+     * hiden Fav Marker
+     */
+    FavCityFilterMarker.map( ( Marker ) => {
+      $( Marker._element ).css( 'display', 'none' )
+    } )
+
+    $( '.mapboxgl-popup' ).hide()
   }
- 
+
   /**
    * Changed tab is Global Trends
    */
@@ -169,6 +269,15 @@
 
       $( Marker._element ).css( 'display', 'none' )
     } )
+
+    /**
+     * hiden Fav Marker
+     */
+    FavCityFilterMarker.map( ( Marker ) => {
+      $( Marker._element ).css( 'display', 'block' )
+    } )
+
+    $( '.mapboxgl-popup' ).show()
   }
 
   const SelectMapStateUI = () => {
@@ -182,12 +291,15 @@
   }
 
   const MakeMarker = ( data, dataUI ) => {
-    let el = document.createElement( 'div' )
-    el.className = 'marker'
-    el.style.backgroundImage = `url(${ dataUI.Icon })`
-    el.style.backgroundSize = `100%`
-    el.style.width = 50 + 'px'
-    el.style.height = 50 + 'px'
+    // let el = document.createElement( 'div' )
+    // el.className = 'marker'
+    // el.style.backgroundImage = `url(${ dataUI.Icon })`
+    // el.style.backgroundSize = `100%`
+    // el.style.width = 40 + 'px'
+    // el.style.height = 40 + 'px'
+    let el = BuildMarkerUI( {
+      icon: dataUI.Icon,
+    } )
 
     return new mapboxgl.Marker( el )
       .setLngLat( data.geometry.coordinates )
@@ -202,6 +314,9 @@
       } )
       let TaxSlug = c.data( 'tax-slug' )
       let Key = c.data( 'item-key' )
+      let OldMarker = c.data( 'marker' )
+
+      if( OldMarker ) OldMarker.remove()
       c.data( 'marker', Marker )
 
       // Save Fav City
@@ -240,6 +355,16 @@
       Geocoder.on( 'result', e => { _onResult( e, Container ) } )
       Geocoder.on( 'clear', e => { _onClear( e, Container ) } )
 
+      Container.on( {
+        '__MakeMarkerDefault:MyFav' ( e, GeocoderData ) { console.log( GeocoderData )
+          let _Marker = MakeMarker( GeocoderData, {
+            Icon: Container.data( 'icon' )
+          } )  
+          Container.data( 'marker', _Marker )
+          Container.find( 'input.mapboxgl-ctrl-geocoder--input' ).val( GeocoderData.place_name )
+        }
+      } ) 
+
       Container.data( 'geocoder-obj', Geocoder )
       GeoCoderFields.push( Geocoder )
     } )
@@ -261,6 +386,126 @@
     option.selected = value
 
     UpdateTotalCountriesNumber()
+  }
+
+  /**
+   * Filter Fav City
+   */
+  const DoFavCityFilter = async ( Opts ) => {
+    let params = jQuery.extend( {
+      Slug: ''
+    }, Opts )
+
+    /**
+     * Load to from cache
+     */
+    if( FavCityFilterCache[ params.Slug ] ) {
+      return FavCityFilterCache[ params.Slug ]
+    }
+
+    const Result = await $.ajax( {
+      type: 'POST',
+      url: TRSS_MAP_OBJ.ajax_url,
+      data: {
+        action: 'tsm_ajax_get_fav_city_by_cat',
+        data: {...params}
+      },
+    } )
+
+    FavCityFilterCache[ params.Slug ] = Result;
+    
+    return Result
+  }
+
+  const BuildFavCityListUI = ( FavItem, Maker, index ) => { 
+    let HtmlInner = `
+    <span class="__inc-num">${ index + 1 }</span>
+    <div class="fav-entry">
+      <h4 class="city-name">${ FavItem._place_name }</h4>
+      <div class="entry-meta">
+        <div class="__by">by ${ FavItem._user_id.display_name }</div>
+        <div class="__geometry">${ FavItem.geometry.coordinates.join( ', ' ) }</div>
+      </div>
+    </div>`
+
+    let el = $( '<div>', {
+      class: '__fav-city-item',
+      html: HtmlInner
+    } )
+
+    FavCityListContainer.append( el )
+  }
+
+  const BuildMarkerUI = ( opts ) => {
+    const _opts = $.extend( {
+      icon: '',
+      size: [ 40, 40 ]
+    }, opts )
+
+    let el = document.createElement( 'div' )
+    el.className = 'marker'
+    el.style.backgroundImage = `url(${ _opts.icon })`
+    el.style.backgroundSize = `100%`
+    el.style.width = _opts.size[0] + 'px'
+    el.style.height = _opts.size[1] + 'px'
+
+    return el
+  }
+
+  const FavCityShowing = ( data ) => {
+
+    data.map( ( item, index ) => {
+      let el = BuildMarkerUI( {
+        icon: item._icon
+      } )
+
+      // create the popup
+      let popup = new mapboxgl.Popup({ offset: 20 }).setText( `
+      ${ item._place_name } — by ${ item._user_id.display_name }` );
+
+      let Marker = new mapboxgl.Marker( el )
+        .setLngLat( item.geometry.coordinates )
+        .setPopup( popup )
+        .addTo( Map )
+        
+      FavCityFilterMarker.push( Marker )
+      BuildFavCityListUI( item, Marker, index )
+    } )
+  }
+
+  const FavCityFilter = async function( e ) {
+    e.preventDefault()
+    let button = $( this )
+    let [ Slug ] = [ button.val() ]
+
+    button
+      .addClass( '__is-active' )
+      .siblings()
+      .removeClass( '__is-active' )
+
+    const Result = await DoFavCityFilter( { Slug } )
+
+    if( ! Result.success ) {
+      alert( 'Error!' )
+      return;
+    }
+    
+    /**
+     * Remove avaiable marker old
+     */
+    if( FavCityFilterMarker.length ) {
+      FavCityFilterMarker.map( ( M ) => { M.remove() } )
+    }
+
+    /**
+     * Clear list fav
+     */
+    FavCityListContainer.empty()
+
+    /**
+     * Add new marker
+     */
+    FavCityShowing( Result.data )
   }
 
   /**
@@ -292,13 +537,23 @@
       let CacheDataMap = { CountrySelected, FavoriteCity }
       localStorage.setItem( 'CacheDataMap', JSON.stringify( CacheDataMap ) )
 
-      button.text( 'Saving...' )
+      button.text( 'SAVING...' )
       await _SaveDB( CacheDataMap )
       button.text( 'SAVE' )
     }
 
     const _SaveDB = async ( Data ) => {
-
+      return await $.ajax( {
+        type: 'POST',
+        url: TRSS_MAP_OBJ.ajax_url,
+        data: {
+          action: 'tsm_ajax_save_map_data',
+          data: Data
+        },
+        error: ( e ) => {
+          console.log( e )
+        }
+      } )
     }
 
     $( '#saveButton' ).on( 'click', function( e ) {

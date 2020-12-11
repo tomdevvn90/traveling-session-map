@@ -311,7 +311,7 @@ body #trss-map-page #arrow-mobile{
   cursor: pointer;
 }
 
-.btn-secondary img {
+/* .btn-secondary img {
     display: block;
     height: 30px;
     width: 30px;
@@ -326,7 +326,7 @@ body #trss-map-page #arrow-mobile{
    border-width:2px;
    font-size:0px;
    border-radius:10px;
-}
+} */
 #selectedLayer{
   margin-top:25px;
   font-size:17px;
