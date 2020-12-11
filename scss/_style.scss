@@ -144,6 +144,10 @@
         margin: 0 0 2px;
         text-decoration: underline;
         font-family: Arial;
+
+        @media(max-width: 425px) {
+          font-size: 14px;
+        }
       }
 
       .entry-meta {

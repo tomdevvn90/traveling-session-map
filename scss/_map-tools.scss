@@ -12,6 +12,10 @@
 
   p.short-desc {
     font-size: 12px;
+
+    @media(max-width: 425px) {
+      margin-bottom: 10px;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -30,6 +34,10 @@
   .sub-heading {
     font-size: 14px;
     font-weight: bold;
+
+    @media(max-width: 425px) {
+      margin: 15px 0 5px;
+    }
   }
 
   .total-states-selected {
@@ -260,6 +268,30 @@
     &.__is-active {
       background: #f3f3f3;
       box-shadow: 0 0 2px 0 rgba(1,1,1,.05) inset;
+    }
+  }
+}
+
+.total-countries-group {
+  display: flex;
+  align-items: center;
+
+  h4.sub-heading {
+    margin: 0 20px 0 0;
+  }
+
+  .total-states-selected {
+    position: relative;
+
+    &:after {
+      content: "";
+      border: solid 17px transparent;
+      border-right-color: #f44336;
+      position: absolute;
+      top: 50%;
+      right: calc(100% - 7px);
+      transform: translateY(-50%);
+      -webkit-transform: translateY(-50%);
     }
   }
 }
