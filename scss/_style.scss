@@ -1,5 +1,6 @@
 #trss-map-page {
   position: relative;
+  overflow: hidden;
   
   .map-tools-container {
     position: absolute;
@@ -10,6 +11,7 @@
 
   #map,
   #traveling-session-map {
+    overflow: hidden;
     position: relative;
     width: calc(100% - 400px);
     margin-left: 400px;
