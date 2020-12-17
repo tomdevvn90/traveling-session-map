@@ -2,6 +2,9 @@
  * Map 
  */
 
+import { shadeColor } from './helpers'
+import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-func'
+
 ;( ( w, $ ) => {
   'use strict'
 
@@ -20,6 +23,7 @@
   let FavCityFilterMarker = []
   let FavCityFilterCache = {}
   let FavCityListContainer = null
+  let CountriesPopular = []
   
   /**
    * Map
@@ -28,34 +32,138 @@
   let MapCenter = [-53.842, 34.691];
   let MapZoom = 1.95;
   let MapLayers = [
-    {
-      id: 'WorldCountries',
-      type: 'fill',
-      source: 'states',
-      layout: {
-        'visibility': 'visible'
-      },
-      paint: {
-        "fill-color": ["case", ["boolean", ["feature-state", "hover"], false], "#0071A4", "#ffffff"],
-        "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.8, 0.001],
-      },
-      'fill-opacity': 0.4,
-    }
+    () => {
+      return {
+        id: 'WorldCountries',
+        type: 'fill',
+        source: 'states',
+        layout: {
+          'visibility': 'visible'
+        },
+        paint: {
+          'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], '#4caf50', '#ffffff'],
+          'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.8, 0.001],
+        },
+        'fill-opacity': 0.4,
+      }
+    },
+    ( min, max ) => {
+      let FillColorPrimaty = '#ffd761'
+      let RankStep = 5
+
+      const FillColorRankRender = ( Color, Step, Max ) => {
+        let FillColorRank = [] 
+        if( Max <= Step ) {
+          for( let i = 0; i <= (Step - 1); i++ ) {
+            FillColorRank.push( i )
+            FillColorRank.push( [ 'to-color', shadeColor( Color, ((i * 10) * -1) ) ] )
+          }
+        } else {
+          for( let i = 0; i <= (Step - 1); i++ ) {
+            FillColorRank.push( (Max / Step) * i )
+            FillColorRank.push( [ 'to-color', shadeColor( Color, ((i * 10) * -1) ) ] )
+          }
+        }
+        return FillColorRank
+      }
+
+      return {
+        id: 'WorldCountriesPopular',
+        type: 'fill',
+        source: 'CountriesPopular',
+        layout: {
+          'visibility': 'none'
+        },
+        paint: {
+          'fill-color': [ 'interpolate', ['linear'], ['get', 'countedRank'], ...FillColorRankRender( FillColorPrimaty, RankStep, max ) ],
+          'fill-opacity': [ 'match', ['get', 'countedRank'], [0], 0, 1 ],
+        },
+      }
+    },
   ]
+
+  const MapStyle = {
+    streets: 'mapbox://styles/mapbox/streets-v11',
+    light: 'mapbox://styles/mapbox/light-v10',
+    dark: 'mapbox://styles/mapbox/dark-v10'
+  }
 
   let Map = new mapboxgl.Map( {
     container: 'traveling-session-map', 
-    style: 'mapbox://styles/mapbox/streets-v11', 
+    style: MapStyle.dark,
     center: MapCenter,
     zoom: MapZoom,
   } );
+
+  const SwitchMapStyle = ( Style ) => { 
+    Map.setStyle( Style );
+  }
 
   const LoadStateMapData = async () => {
     const Result = await $.get( TRSS_MAP_OBJ.mapbox_world_countries_json_url )
     return JSON.parse( Result )
   }
 
+  const LoadUserCountriesSelected = async () => {
+    const Result = await $.ajax( {
+      type: 'POST',
+      url: TRSS_MAP_OBJ.ajax_url,
+      data: {
+        action: 'tsm_ajax_get_user_country_selected'
+      },
+      error ( e ) {
+        alert( 'Internal Error: Please reload page!' )
+        console.log( e )
+      }
+    } )
+
+    return Result
+  }
+
+  const CountriesPopularHandle = async ( StateData ) => {
+    /**
+     * Get Countries Popular
+     */
+    const { success, data } = await LoadUserCountriesSelected()
+    CountriesPopular = data
+
+    let CountriesPopularSource = {
+      'type': 'FeatureCollection',
+      'features': []
+    }
+
+    /**
+     * Set countedRank
+     */
+    StateData.features.map( ( State ) => {
+      
+      if( CountriesPopular[ parseInt( State.id ) ] ) {
+        let properties = State.properties
+        let geometry = State.geometry
+        properties.countedRank = CountriesPopular[ parseInt( State.id ) ] || 0
+        
+        CountriesPopularSource.features.push( {
+          id: State.id,
+          type: 'Feature',
+          properties,
+          geometry
+        } )
+      }
+    } )
+
+    Map.addSource( 'CountriesPopular', {
+      'type': 'geojson',
+      'data': CountriesPopularSource
+    } )
+
+    /**
+     * Countries Popular layer
+     */
+    Map.addLayer( MapLayers[ 1 ]( 0, Math.max( ...Object.values( CountriesPopular ) ) ), 'natural-line-label' )
+  }
+
   const MapInit = async () => {
+
     /**
      * Set
      */
@@ -67,6 +175,11 @@
     const StateData = await LoadStateMapData()
     
     /**
+     * Countries Popular Handle
+     */
+    await CountriesPopularHandle( StateData )
+
+    /**
      * Add Source
      */
     Map.addSource( 'states', {
@@ -75,32 +188,9 @@
     } )
 
     /**
-     * Add Map Layer
+     * My Favorite Layer
      */
-    MapLayers.forEach( ( param ) => {
-      Map.addLayer( { ...param }, 'natural-line-label' )
-    } )
-
-    /**
-     * Select Country
-     */
-    const SelectCountry = ( e ) => {
-      let StateID = e.features[0].id
-      let _inc = CountrySelected.includes( StateID )
-        
-      if( true == _inc ) {
-        CountrySelected.splice( CountrySelected.indexOf( StateID ) , 1 )
-        Map.setFeatureState( { source: 'states', id: StateID }, { hover: !_inc } )
-      } else {
-        CountrySelected.push( StateID )
-        Map.setFeatureState( { source: 'states', id: StateID }, { hover: !_inc } )
-      }
-
-      $( '#Map-State' ).find( `option[value="${ StateID }"]` ).prop( 'selected', !_inc )
-      $( '#Map-State' ).trigger( 'change' )
-
-      UpdateTotalCountriesNumber()
-    }
+    Map.addLayer( MapLayers[ 0 ](), 'natural-line-label' )
     Map.on( 'click', 'WorldCountries', SelectCountry )
 
     /**
@@ -109,9 +199,23 @@
     await LoadInit()
 
     /**
+     * Countries Popular Layer Show/Hide
+     */
+    $( '.__btn-countries-popular' ).on( 'click', function() {
+      $( this ).toggleClass( '__is-active' )
+      MapLayerDisplayControl( false, false, $( this ).hasClass( '__is-active' ), true ) 
+    } )
+
+    /**
      * Filter 
      */
-    $( '._fav-filter-item' ).on( 'click', FavCityFilter )
+    // $( '._fav-filter-item' ).on( 'click', FavCityFilter )
+    
+    $( '._fav-filter-item' ).each( function() {
+      let Button = $( this )
+      let TaxName = Button.val()
+      GlobalTrendsFilterSetup( { Button, TaxName, Map } )
+    } )
 
     /**
      * Hide loader
@@ -121,6 +225,27 @@
   }
 
   Map.on( 'load', MapInit )
+
+  /**
+   * Select Country
+   */
+  const SelectCountry = ( e ) => {
+    let StateID = e.features[0].id
+    let _inc = CountrySelected.includes( StateID )
+      
+    if( true == _inc ) {
+      CountrySelected.splice( CountrySelected.indexOf( StateID ) , 1 )
+      Map.setFeatureState( { source: 'states', id: StateID }, { hover: !_inc } )
+    } else {
+      CountrySelected.push( StateID )
+      Map.setFeatureState( { source: 'states', id: StateID }, { hover: !_inc } )
+    }
+
+    $( '#Map-State' ).find( `option[value="${ StateID }"]` ).prop( 'selected', !_inc )
+    $( '#Map-State' ).trigger( 'change' )
+
+    UpdateTotalCountriesNumber()
+  }
 
   /**
    * Load data init
@@ -185,7 +310,6 @@
 
     // Load favorite
     if( Object.keys( FavoriteCity ).length ) {
-      // console.log( FavoriteCity )
       Object.keys( FavoriteCity ).map( ( key ) => {
         let data =  FavoriteCity[ key ]
         $( `.__mapbox-geocode-field-container[data-item-key=${ key }]` ).trigger( '__MakeMarkerDefault:MyFav', [ data ] )
@@ -236,53 +360,100 @@
   }
 
   /**
+   * Map layers display control
+   * 
+   * @param {*} MyCountries 
+   * @param {*} MyFav 
+   * @param {*} CountriesPopular 
+   * @param {*} FavFilter 
+   */
+  const MapLayerDisplayControl = ( MyCountries = true, MyFav = true, CountriesPopular = false, FavFilter = false ) => {
+    /**
+     * My Contries Selected
+     */
+    if( MyCountries ) {
+      Map.setLayoutProperty( 'WorldCountries', 'visibility' )
+    } else {
+      Map.setLayoutProperty( 'WorldCountries', 'visibility', 'none' )
+    }
+    /**
+     * End - My Contries Selected
+     */
+
+    /**
+     * My Favorites
+     */
+    if( MyFav ) {
+      $( '.__mapbox-geocode-field-container' ).each( function() {
+        let Marker = $( this ).data( 'marker' )
+        if( ! Marker ) return 
+  
+        $( Marker._element ).css( 'display', 'block' )
+      } )
+    } else {
+      $( '.__mapbox-geocode-field-container' ).each( function() {
+        let Marker = $( this ).data( 'marker' )
+        if( ! Marker ) return 
+  
+        $( Marker._element ).css( 'display', 'none' )
+      } )
+    }
+    /**
+     * End - My Favorites
+     */
+
+    /**
+     * Countries Popular
+     */
+    if( CountriesPopular ) {
+      Map.setLayoutProperty( 'WorldCountriesPopular', 'visibility' )
+    } else {
+      Map.setLayoutProperty( 'WorldCountriesPopular', 'visibility', 'none' )
+    }
+    /**
+     * End - Countries Popular
+     */
+
+    /**
+     * Fav Filter
+     */
+    if( FavFilter ) {
+      FavCityFilterMarker.map( ( Marker ) => {
+        $( Marker._element ).css( 'display', 'block' )
+      } )
+  
+      $( '.mapboxgl-popup' ).show()
+    } else {
+      FavCityFilterMarker.map( ( Marker ) => {
+        $( Marker._element ).css( 'display', 'none' )
+      } )
+  
+      $( '.mapboxgl-popup' ).hide()
+    }
+    /**
+     * End - Fav Filter
+     */
+  }
+
+  /**
    * Changed tab is My Travels
    */
   const isMyTravelsTabHandle = () => {
-    Map.setLayoutProperty( 'WorldCountries', 'visibility' )
-
-    $( '.__mapbox-geocode-field-container' ).each( function() {
-      let Marker = $( this ).data( 'marker' )
-      if( ! Marker ) return 
-
-      $( Marker._element ).css( 'display', 'block' )
-    } )
-
-    /**
-     * hiden Fav Marker
-     */
-    FavCityFilterMarker.map( ( Marker ) => {
-      $( Marker._element ).css( 'display', 'none' )
-    } )
-
-    $( '.mapboxgl-popup' ).hide()
+    MapLayerDisplayControl( true, true, false, false )
+    // SwitchMapStyle( MapStyle.streets )
   }
 
   /**
    * Changed tab is Global Trends
    */
   const isGlobalTrendsTabHandle = () => {
-    Map.setLayoutProperty( 'WorldCountries', 'visibility', 'none' )
-    
-    $( '.__mapbox-geocode-field-container' ).each( function() {
-      let Marker = $( this ).data( 'marker' )
-      if( ! Marker ) return 
-
-      $( Marker._element ).css( 'display', 'none' )
-    } )
-
-    /**
-     * hiden Fav Marker
-     */
-    FavCityFilterMarker.map( ( Marker ) => {
-      $( Marker._element ).css( 'display', 'block' )
-    } )
-
-    $( '.mapboxgl-popup' ).show()
+    let CountriesPopular = $( '.__btn-countries-popular' ).hasClass( '__is-active' )
+    MapLayerDisplayControl( false, false, CountriesPopular, true )
+    // SwitchMapStyle( MapStyle.dark )
   }
 
   const SelectMapStateUI = () => {
-    SelectState = $( '#Map-State' ).bsMultiSelect( {
+    SelectState = w.jQuery( '#Map-State' ).bsMultiSelect( {
       setSelected: SelectStateHandle
     } );
 
@@ -398,17 +569,8 @@
       return FavCityFilterCache[ params.Slug ]
     }
 
-    const Result = await $.ajax( {
-      type: 'POST',
-      url: TRSS_MAP_OBJ.ajax_url,
-      data: {
-        action: 'tsm_ajax_get_fav_city_by_cat',
-        data: {...params}
-      },
-    } )
-
-    FavCityFilterCache[ params.Slug ] = Result;
-    
+    const  Result = await GetFavCityByCat( params.Slug )
+    FavCityFilterCache[ params.Slug ] = Result
     return Result
   }
 
@@ -476,6 +638,7 @@
     button
       .addClass( '__is-active' )
       .siblings()
+      .not( '.__btn-countries-popular' )
       .removeClass( '__is-active' )
 
     const Result = await DoFavCityFilter( { Slug } )
@@ -546,6 +709,7 @@
           data: Data
         },
         error: ( e ) => {
+          alert( 'Internal Error: Please try again!' )
           console.log( e )
         }
       } )

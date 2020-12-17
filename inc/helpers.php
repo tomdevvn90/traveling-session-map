@@ -319,3 +319,40 @@ function tsm_svg_icon( $name ) {
     $icons = require( TRSSMAP_DIR . '/inc/svg.php' );
     return ( $icons[ $name ] ) ? $icons[ $name ] : __( 'Not support icon "' . $name . '"!' );
 }
+
+function tsm_get_user_country_selected() {
+    $result = get_users( [
+        'meta_key' => 'CountrySelected',
+        'meta_compare' => 'EXISTS'
+    ] );
+
+    if( count( $result ) ) {
+        return array_map( function( $u ) {
+            return [
+                'uid' => $u->ID,
+                'country_ids' => get_user_meta( $u->ID, 'CountrySelected', true ),
+            ];
+        }, $result );
+    } else {
+        return [];
+    }
+}
+
+function tsm_build_countries_count( $data = [] ) {
+    $countries_count = [];
+    if( count( $data ) <= 0 ) return $countries_count;
+
+    foreach( $data as $item ) {
+        if( $item[ 'country_ids' ] ) {
+            foreach( $item[ 'country_ids' ] as $cid ) {
+                if( $countries_count[ $cid ] ) {
+                    $countries_count[ $cid ] += 1;
+                } else {
+                    $countries_count[ $cid ] = 1;
+                }
+            }
+        }
+    }
+
+    return $countries_count;
+}

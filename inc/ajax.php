@@ -56,3 +56,13 @@ function tsm_ajax_get_fav_city_by_cat() {
 
 add_action( 'wp_ajax_tsm_ajax_get_fav_city_by_cat', 'tsm_ajax_get_fav_city_by_cat' );
 add_action( 'wp_ajax_nopriv_tsm_ajax_get_fav_city_by_cat', 'tsm_ajax_get_fav_city_by_cat' );
+
+function tsm_ajax_get_user_country_selected() {
+  wp_send_json( [
+    'success' => true,
+    'data' => tsm_build_countries_count( tsm_get_user_country_selected() ),
+  ] );
+}
+
+add_action( 'wp_ajax_tsm_ajax_get_user_country_selected', 'tsm_ajax_get_user_country_selected' );
+add_action( 'wp_ajax_nopriv_tsm_ajax_get_user_country_selected', 'tsm_ajax_get_user_country_selected' );
