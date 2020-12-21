@@ -90,7 +90,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
 
   let Map = new mapboxgl.Map( {
     container: 'traveling-session-map', 
-    style: MapStyle.dark,
+    style: MapStyle.streets,
     center: MapCenter,
     zoom: MapZoom,
   } );

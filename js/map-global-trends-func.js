@@ -92,6 +92,7 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
     self
       .toggleClass( '__is-active' )
       .siblings()
+      .not( '.__btn-countries-popular' )
       .removeClass( '__is-active' )
 
     $( '._fav-filter-item' ).each( function() {
