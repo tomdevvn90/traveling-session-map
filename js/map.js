@@ -48,7 +48,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
       }
     },
     ( min, max ) => {
-      let FillColorPrimaty = '#ffd761'
+      let FillColorPrimaty = '#efa274'
       let RankStep = 5
 
       const FillColorRankRender = ( Color, Step, Max ) => {
@@ -56,7 +56,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
         if( Max <= Step ) {
           for( let i = 0; i <= (Step - 1); i++ ) {
             FillColorRank.push( i )
-            FillColorRank.push( [ 'to-color', shadeColor( Color, ((i * 10) * -1) ) ] )
+            FillColorRank.push( [ 'to-color', shadeColor( Color, ((i * 5) * -1) ) ] )
           }
         } else {
           for( let i = 0; i <= (Step - 1); i++ ) {
@@ -93,7 +93,14 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
     style: MapStyle.streets,
     center: MapCenter,
     zoom: MapZoom,
+    attributionControl: false,
   } );
+
+  Map.addControl(
+    new mapboxgl.AttributionControl({
+      customAttribution: '<a href="https://travelingsession.com/" target="_blank";">© My Travel Sessions</a>',
+    })
+  );
 
   const SwitchMapStyle = ( Style ) => { 
     Map.setStyle( Style );
