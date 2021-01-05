@@ -250,11 +250,26 @@ body {
       align-items: center;
       justify-content: center;
       line-height: 0;
+      transition: .3s ease;
+      -webkit-transition: .3s ease; 
 
       svg {
         width: 100%;
         height: auto;
       }
+    }
+  }
+
+  .__toggle-button-style {
+    background: #e8f3ff;
+    padding: 8px 10px;
+    border-radius: 3px;
+    border: solid 1px #c4e0ff;
+    transition: .3s ease;
+    -webkit-transition: .3s ease;
+
+    &:hover {
+      background: #c4e0ff; 
     }
   }
 
@@ -266,6 +281,15 @@ body {
     
     .__toggle-content {
       display: block;
+    }
+
+    .arrow-toggle { 
+      transform: rotateX(180deg);
+      -webkit-transform: rotateX(180deg);
+    }
+
+    .__toggle-button-style {
+      background: #c4e0ff;
     }
   }
 }

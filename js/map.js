@@ -48,7 +48,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
       }
     },
     ( min, max ) => {
-      let FillColorPrimaty = '#efa274'
+      let FillColorPrimaty = '#d4cbc1' 
       let RankStep = 5
 
       const FillColorRankRender = ( Color, Step, Max ) => {
@@ -466,6 +466,9 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
 
     $( '#Map-State' ).on( 'change', () => {
       SelectState.bsMultiSelect( 'Update' )
+
+      // Clear text
+      // $( '#map-console ul.form-control' ).find( 'input[type=search]' ).val( '' )
     } ).trigger( 'change' )
   }
 

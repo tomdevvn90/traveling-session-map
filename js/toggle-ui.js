@@ -35,7 +35,7 @@
       if( _self.hasClass( '__is-open' ) ) {
         _self.trigger( '__close:ToggleUI' )
       } else {
-        console.log( 'is close' )
+        // console.log( 'is close' )
         _self.trigger( '__open:ToggleUI' )
       }
 

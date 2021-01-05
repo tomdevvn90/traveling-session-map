@@ -62,7 +62,7 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
     id: `${ TaxName }-point`,
     type: 'circle',
     source: SourceID,
-    minzoom: 7,
+    // minzoom: 7,
     layout: {
       'visibility': 'none'
     },

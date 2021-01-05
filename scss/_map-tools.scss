@@ -22,6 +22,13 @@
     color: black;
   }
 
+  .label-field {
+    font-size: 12px;
+    margin-bottom: 6px;
+    font-weight: 500;
+    display: block;
+  }
+
   #saveButton {
     background: #3039b9;
     text-transform: uppercase;
@@ -29,6 +36,7 @@
     font-weight: bold;
     padding: 10px;
     width: 100%;
+    border-radius: 3px;
   }
 
   .sub-heading {
@@ -115,6 +123,8 @@
     padding: 10px;
     border: solid 1px #eee;
     border-radius: 1px;
+    box-shadow: 0 3px 10px -2px rgba(1,1,1,.15);
+    border-radius: 4px;
 
     li.badge {
       padding: 5px 21px 5px 5px !important;
@@ -181,6 +191,8 @@
     border: solid #eee;
     border-width: 0 1px;
     background: #fafafa;
+    border-radius: 6px;
+    overflow: hidden;
 
     .__fav-item {
       display: block;
@@ -230,7 +242,8 @@
 
       &--input {
         padding-left: 28px;
-        border-radius: 3px;
+        border-radius: 4px;
+        box-shadow: 0 3px 10px -2px rgba(1,1,1,.15); 
       }
     }
   }
