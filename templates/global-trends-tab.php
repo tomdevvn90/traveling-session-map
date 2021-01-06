@@ -7,7 +7,7 @@
 <div class="map-console2" id="map-console2">
   <p class="short-desc">
     <img 
-      style="width: 60%; margin: 0 auto;" 
+      style="width: 60%; margin: 0 auto; display: block;" 
       src="<?= TRSSMAP_URI . '/img/traveling-logo-dark.png' ?>" 
       alt="logo" />
   </p>
