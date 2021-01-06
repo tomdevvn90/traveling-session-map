@@ -5,7 +5,12 @@
 
 ?>
 <div class="map-console2" id="map-console2">
-  <p class="short-desc"><?= __( 'Welcome to Traveling Session, the only website featuring real reviews of travel destinations and festivals around the world. Plus expert travel tips and more. Share your thought about a destination using the stars in the User Reviews or register and log in to start sharing reviews of your favorite travel destinations...' ) ?></p>
+  <p class="short-desc">
+    <img 
+      style="width: 60%; margin: 0 auto;" 
+      src="<?= TRSSMAP_URI . '/img/traveling-logo-dark.png' ?>" 
+      alt="logo" />
+  </p>
   <div id="buttons" class="btn-group flex-wrap __fav-citys-filter-buttons"  role="group">
     <button type="button" class="btn btn-secondary __btn-countries-popular" value="WorldCountriesPopular" title="<?= __( 'Visited Cities' ) ?>">
       <img src="<?php echo TRSSMAP_URI; ?>img/icons-07.png">

@@ -17,6 +17,8 @@ export const GetFavCityByCat = async ( Tax ) => {
 
 export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
   const Result = await GetFavCityByCat( TaxName )
+  const Color = Button.data( 'color' )
+  
   if( true != Result.success || Result.data.length == 0 ) return 
 
   let SourceID = `source-${ TaxName }`
@@ -67,7 +69,7 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
       'visibility': 'none'
     },
     paint: {
-      'circle-color': '#990033',
+      'circle-color': Color, // '#990033',
       'circle-stroke-color': 'white',
       'circle-stroke-width': 1,
     }

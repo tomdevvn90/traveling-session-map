@@ -111,31 +111,37 @@ function tsm_favo_list_filter_html() {
             'icon' => TRSSMAP_URI . 'img/icons-01.png',
             'label' => 'Favorite City for Things to Do',
             'slug' => 'favorite-city-for-things-to-do',
+            'color' => '#e45b3e',
         ],
         [
             'icon' => TRSSMAP_URI . 'img/icons-02.png',
             'label' => 'Favorite City for Nightlife',
             'slug' => 'favorite-city-for-nightlife',
+            'color' => '#f7a155',
         ],
         [
             'icon' => TRSSMAP_URI . 'img/icons-03.png',
             'label' => 'Favorite City for Food',
             'slug' => 'favorite-city-for-food',
+            'color' => '#f7d267',
         ],
         [
             'icon' => TRSSMAP_URI . 'img/icons-04.png',
             'label' => 'City where you spend the least',
             'slug' => 'city-where-you-spend-the-least',
+            'color' => '#2d9384',
         ],
         [
             'icon' => TRSSMAP_URI . 'img/icons-05.png',
             'label' => 'City You Feel the Safest',
             'slug' => 'city-you-feel-the-safest',
+            'color' => '#7915d4',
         ],
         [
             'icon' => TRSSMAP_URI . 'img/icons-06.png',
             'label' => 'Top Bucket List City',
             'slug' => 'top-bucket-list-city',
+            'color' => '#47d4ec',
         ],
     ];
 

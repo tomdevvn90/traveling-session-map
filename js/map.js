@@ -229,6 +229,11 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
      */
     $( '.loader' ).hide()
     $( '#trss-map-page' ).removeClass( '__lock-init' )
+
+    /**
+     * 
+     */
+    AutoOpenMapToolDesktop()
   }
 
   Map.on( 'load', MapInit )
@@ -532,7 +537,8 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
       Geocoder.on( 'clear', e => { _onClear( e, Container ) } )
 
       Container.on( {
-        '__MakeMarkerDefault:MyFav' ( e, GeocoderData ) { console.log( GeocoderData )
+        '__MakeMarkerDefault:MyFav' ( e, GeocoderData ) { 
+          // console.log( GeocoderData )
           let _Marker = MakeMarker( GeocoderData, {
             Icon: Container.data( 'icon' )
           } )  
@@ -733,19 +739,26 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
     } )
   }
 
-  const ToggleMapToolsMobile = () => {
-    $( '.button-toggle-map-tools-on-mobile' ).on( 'click', function( e ) {
+  const ToggleMapTools = () => {
+    $( '.__toggle-map-tool' ).on( 'click', function( e ) { 
       e.preventDefault()
-      let SVG = $( this ).children( 'svg' )
+      let self = $( this )
 
-      SVG.toggleClass( 'active' )
+      self.toggleClass( 'active' )
 
-      if( SVG.hasClass( 'active' ) ) {
-        $( '#trss-map-page' ).addClass( '__map-tools-mobile-show' )
+      if( self.hasClass( 'active' ) ) {
+        $( '#trss-map-page' ).addClass( '__map-tools-show' )
       } else {
-        $( '#trss-map-page' ).removeClass( '__map-tools-mobile-show' )
+        $( '#trss-map-page' ).removeClass( '__map-tools-show' )
       }
     } )
+  }
+
+  const AutoOpenMapToolDesktop = () => {
+    
+    if( $( w ).innerWidth() <= 980 ) return 
+    $( '.__toggle-map-tool' ).addClass( 'active' )
+    $( '#trss-map-page' ).addClass( '__map-tools-show' )
   }
 
   /**
@@ -754,13 +767,20 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
   const Ready = () => {
     MapTools()
     Save()
-    ToggleMapToolsMobile()
+    ToggleMapTools()
   }
 
   /**
    * DOM Ready
    */
   $( Ready )
+
+  /**
+   * Browser load completed
+   */
+  $( w ).on( 'load', () => {
+    
+  } )
 
 } )( window, jQuery )
 

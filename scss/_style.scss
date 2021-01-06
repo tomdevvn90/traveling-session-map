@@ -44,8 +44,8 @@
   
   .map-tools-container {
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 20px;
+    top: 20px;
     z-index: 9;
   }
 
@@ -53,35 +53,44 @@
   #traveling-session-map {
     overflow: hidden;
     position: relative;
-    width: calc(100% - 400px);
-    margin-left: 400px;
+    width: 100%; 
     height: 86vh;
   }
 
-  @media(max-width: 768px) {
+  .map-tools-container {
+    max-width: calc(100% - 60px);
+    transform: translateX(calc( -100% - 10px ));
+    -webkit-transform: translateX(calc( -100% - 10px ));
+    transition: .3s ease;
+    -webkit-transition: .3s ease;
+    // opacity: 0;
 
-    .map-tools-container {
-      max-width: calc(100% - 60px);
-      transform: translateX(-100%);
-      -webkit-transform: translateX(-100%);
+    > *:not( .__toggle-map-tool ) {
+      opacity: 0;
       transition: .3s ease;
       -webkit-transition: .3s ease;
-      opacity: 0;
     }
+  }
+
+  &.__map-tools-show {
+
+    .map-tools-container { 
+      transform: translateX(0);
+      -webkit-transform: translateX(0);
+      // opacity: 1;
+
+      > *:not( .__toggle-map-tool ) {
+        opacity: 1;
+      }
+    }
+  }
+
+  @media(max-width: 768px) {
 
     #traveling-session-map {
       margin-left: 0;
       width: 100%;
       height: 70vh;
-    }
-
-    &.__map-tools-mobile-show {
-
-      .map-tools-container { 
-        transform: translateX(0);
-        -webkit-transform: translateX(0);
-        opacity: 1;
-      }
     }
   }
 }
