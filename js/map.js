@@ -90,7 +90,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
 
   let Map = new mapboxgl.Map( {
     container: 'traveling-session-map', 
-    style: MapStyle.streets,
+    style: MapStyle.light,
     center: MapCenter,
     zoom: MapZoom,
     attributionControl: false,
@@ -452,7 +452,6 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
    */
   const isMyTravelsTabHandle = () => {
     MapLayerDisplayControl( true, true, false, false )
-    // SwitchMapStyle( MapStyle.streets )
   }
 
   /**
@@ -461,7 +460,6 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
   const isGlobalTrendsTabHandle = () => {
     let CountriesPopular = $( '.__btn-countries-popular' ).hasClass( '__is-active' )
     MapLayerDisplayControl( false, false, CountriesPopular, true )
-    // SwitchMapStyle( MapStyle.dark )
   }
 
   const SelectMapStateUI = () => {
@@ -471,9 +469,6 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
 
     $( '#Map-State' ).on( 'change', () => {
       SelectState.bsMultiSelect( 'Update' )
-
-      // Clear text
-      // $( '#map-console ul.form-control' ).find( 'input[type=search]' ).val( '' )
     } ).trigger( 'change' )
   }
 
