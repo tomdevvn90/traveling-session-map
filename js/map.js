@@ -48,7 +48,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
       }
     },
     ( min, max ) => {
-      let FillColorPrimaty = '#f57b5a' 
+      let FillColorPrimaty = '#ffc9ba' 
       let RankStep = 5
 
       const FillColorRankRender = ( Color, Step, Max ) => {
