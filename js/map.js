@@ -41,14 +41,14 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
           'visibility': 'visible'
         },
         paint: {
-          'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], '#4caf50', '#ffffff'],
+          'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], '#f45132', '#ffffff'],
           'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.8, 0.001],
         },
         'fill-opacity': 0.4,
       }
     },
     ( min, max ) => {
-      let FillColorPrimaty = '#d4cbc1' 
+      let FillColorPrimaty = '#f06a46' 
       let RankStep = 5
 
       const FillColorRankRender = ( Color, Step, Max ) => {
@@ -91,7 +91,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
 
   let Map = new mapboxgl.Map( {
     container: 'traveling-session-map', 
-    style: MapStyle.other,
+    style: MapStyle.light,
     center: MapCenter,
     zoom: MapZoom,
     attributionControl: false,
