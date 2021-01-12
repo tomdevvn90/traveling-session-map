@@ -48,7 +48,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
       }
     },
     ( min, max ) => {
-      let FillColorPrimaty = '#ffc9ba' 
+      let FillColorPrimaty = '#ffa183' 
       let RankStep = 5
 
       const FillColorRankRender = ( Color, Step, Max ) => {
@@ -61,7 +61,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
         } else {
           for( let i = 0; i <= (Step - 1); i++ ) {
             FillColorRank.push( (Max / Step) * i )
-            FillColorRank.push( [ 'to-color', shadeColor( Color, ((i * 10) * -1) ) ] )
+            FillColorRank.push( [ 'to-color', shadeColor( Color, ((i * 5) * -1) ) ] )
           }
         }
         return FillColorRank
