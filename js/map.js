@@ -41,14 +41,14 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
           'visibility': 'visible'
         },
         paint: {
-          'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], '#f45132', '#ffffff'],
+          'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], '#f57b5a', '#ffffff'],
           'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.8, 0.001],
         },
         'fill-opacity': 0.4,
       }
     },
     ( min, max ) => {
-      let FillColorPrimaty = '#f06a46' 
+      let FillColorPrimaty = '#f57b5a' 
       let RankStep = 5
 
       const FillColorRankRender = ( Color, Step, Max ) => {
