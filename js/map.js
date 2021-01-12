@@ -85,12 +85,13 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
   const MapStyle = {
     streets: 'mapbox://styles/mapbox/streets-v11',
     light: 'mapbox://styles/mapbox/light-v10',
-    dark: 'mapbox://styles/mapbox/dark-v10'
+    dark: 'mapbox://styles/mapbox/dark-v10',
+    other: 'mapbox://styles/vincenzo-m/ckdr7gxlu0pcq19nluy0jwd3n'
   }
 
   let Map = new mapboxgl.Map( {
     container: 'traveling-session-map', 
-    style: MapStyle.light,
+    style: MapStyle.other,
     center: MapCenter,
     zoom: MapZoom,
     attributionControl: false,
