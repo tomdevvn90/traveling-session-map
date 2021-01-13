@@ -33,6 +33,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
   let MapZoom = 1.95;
   let MapLayers = [
     () => {
+      let ColorSelected = '#EFAA7B'
       return {
         id: 'WorldCountries',
         type: 'fill',
@@ -41,14 +42,14 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
           'visibility': 'visible'
         },
         paint: {
-          'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], '#f57b5a', '#ffffff'],
+          'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], ColorSelected, '#ffffff'],
           'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.8, 0.001],
         },
         'fill-opacity': 0.4,
       }
     },
     ( min, max ) => {
-      let FillColorPrimaty = '#ffa183' 
+      let FillColorPrimaty = '#EFAA7B' 
       let RankStep = 5
 
       const FillColorRankRender = ( Color, Step, Max ) => {
@@ -56,12 +57,16 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
         if( Max <= Step ) {
           for( let i = 0; i <= (Step - 1); i++ ) {
             FillColorRank.push( i )
-            FillColorRank.push( [ 'to-color', shadeColor( Color, ((i * 5) * -1) ) ] )
+            let ColorRank = (i == 0) ? Color : shadeColor( Color, ((i * 4) * -1) )
+            
+            FillColorRank.push( [ 'to-color', ColorRank ] )
           }
         } else {
           for( let i = 0; i <= (Step - 1); i++ ) {
             FillColorRank.push( (Max / Step) * i )
-            FillColorRank.push( [ 'to-color', shadeColor( Color, ((i * 5) * -1) ) ] )
+            let ColorRank = (i == 0) ? Color : shadeColor( Color, ((i * 4) * -1) )
+
+            FillColorRank.push( [ 'to-color', ColorRank ] )
           }
         }
         return FillColorRank
