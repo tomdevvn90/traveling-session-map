@@ -343,3 +343,30 @@ body {
     }
   }
 }
+
+.mess-style {
+  display: block;
+  font-size: 12px;
+  padding-left: 24px;
+  position: relative;
+  font-weight: bold;
+  margin-bottom: 8px;
+
+  span {
+    
+    &.mess-icon { 
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 18px;
+
+      img {
+        margin: 0;
+      }
+    }
+  }
+
+  &.__info-text {
+
+  }
+}
