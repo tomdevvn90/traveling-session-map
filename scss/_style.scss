@@ -310,3 +310,36 @@ body {
     padding: 0;
   }
 }
+
+.ss-login-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center; 
+}
+
+.ss-head-entry {
+
+  .ss-brand {
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .ss-login-nav {
+    margin-bottom: 20px;
+    font-size: 12px;
+
+    a {
+      margin: 5px 6px;
+      color: #222 !important;
+      font-size: 12px;
+      text-transform: uppercase;
+      transition: .3s ease;
+      -webkit-transition: .3s ease;
+
+      &:hover {
+        color: #3039b9 !important;
+      }
+    }
+  }
+}

@@ -6,12 +6,8 @@
 
 ?>
 <div class="map-console" id="map-console">
-  <p class="short-desc">
-    <img 
-      style="width: 60%; margin: 0 auto; display: block;" 
-      src="<?= TRSSMAP_URI . '/img/traveling-logo-dark.png' ?>" 
-      alt="logo" />
-  </p>
+  <? load_template( TRSSMAP_DIR . '/templates/map-tool-brand.php', false ) ?>
+
   <div class="total-countries-group">
     <h4 class="sub-heading"><?= __( 'Total Countries You Visited' ) ?></h4>
     <div id="d1" class="total-states-selected">0</div>
@@ -43,4 +39,4 @@
   <hr style="margin: 16px 0 0 0" />
 
   <button id="saveButton" class="button button4"><?= __( 'Save' ) ?></button>
-</div>
+</div> <!-- #map-console -->
