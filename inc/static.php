@@ -9,6 +9,10 @@ if( ! function_exists( 'trss_map_scripts' ) ) {
      */
     function trss_map_scripts() {
 
+        # Tippy JS
+        wp_enqueue_style( 'traveling-session-map-tippyjs-scale', 'https://unpkg.com/tippy.js@6.2.7/animations/scale-subtle.css', false, '6' );
+        wp_enqueue_style( 'traveling-session-map-tippyjs-theme', 'https://unpkg.com/tippy.js@6.2.7/themes/material.css', false, '6' );
+
         # CSS
         // wp_enqueue_style( 'trss-map-style', TRSSMAP_URI . 'css/style.css', false, TRSSMAP_VER );
         wp_enqueue_style( 'tsm-style', TRSSMAP_URI . 'dist/tsm.css', false, TRSSMAP_VER );

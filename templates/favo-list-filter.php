@@ -10,6 +10,7 @@ foreach( $favo_list_filter as $index => $item ) :
     class="btn btn-secondary _fav-filter-item __btn-disable" 
     value="<?= $item[ 'slug' ] ?>" 
     title="<?= $item[ 'label' ] ?>"
+    data-tippy-content="<?= $item[ 'label' ] ?>"
     data-color="<?= $item[ 'color' ] ?>" >
     <img src="<?= $item[ 'icon' ] ?>" alt="#">
   </button>

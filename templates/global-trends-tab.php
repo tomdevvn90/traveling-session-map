@@ -12,7 +12,7 @@
     <?= __( 'Click the icon to see the trends for that category on the map' ) ?>
   </div>
   <div id="buttons" class="btn-group flex-wrap __fav-citys-filter-buttons"  role="group">
-    <button type="button" class="btn btn-secondary __btn-countries-popular" value="WorldCountriesPopular" title="<?= __( 'Visited Cities' ) ?>">
+    <button type="button" class="btn btn-secondary __btn-countries-popular" value="WorldCountriesPopular" title="<?= __( 'Visited Cities' ) ?>" data-tippy-content="<?= __( 'Visited Cities' ) ?>">
       <img src="<?php echo TRSSMAP_URI; ?>img/icons-07.png">
     </button>
     <? tsm_favo_list_filter_html() ?>

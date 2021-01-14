@@ -5,6 +5,11 @@
 import { shadeColor } from './helpers'
 import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-func'
 
+/**
+ * Tooltip
+ */
+import tippy from 'tippy.js'
+
 ;( ( w, $ ) => {
   'use strict'
 
@@ -43,14 +48,14 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
         },
         paint: {
           'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], ColorSelected, '#ffffff'],
-          'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.8, 0.001],
+          // 'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.8, 0.001],
         },
         'fill-opacity': 0.4,
       }
     },
     ( min, max ) => {
       let FillColorPrimaty = '#EFAA7B' 
-      let RankStep = 5
+      let RankStep = 8
 
       const FillColorRankRender = ( Color, Step, Max ) => {
         let FillColorRank = [] 
@@ -69,6 +74,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
             FillColorRank.push( [ 'to-color', ColorRank ] )
           }
         }
+        console.log( FillColorRank )
         return FillColorRank
       }
 
@@ -81,7 +87,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
         },
         paint: {
           'fill-color': [ 'interpolate', ['linear'], ['get', 'countedRank'], ...FillColorRankRender( FillColorPrimaty, RankStep, max ) ],
-          'fill-opacity': [ 'match', ['get', 'countedRank'], [0], 0, 1 ],
+          // 'fill-opacity': [ 'match', ['get', 'countedRank'], [0], 0, 1 ],
         },
       }
     },
@@ -762,6 +768,21 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
     $( '#trss-map-page' ).addClass( '__map-tools-show' )
   }
 
+  const DoTooltip = () => {
+    tippy( '.__fav-citys-filter-buttons > .btn', {
+      zIndex: 99999,
+      placement: 'bottom', // https://atomiks.github.io/tippyjs/v6/all-props/#offset
+      arrow: true,
+      theme: 'material',
+      onCreate ( instance ) {
+        /**
+         * Remove title attr
+         */
+        $( instance.reference ).removeAttr( 'title' )
+      }
+    } )
+  }
+
   /**
    * Ready
    */
@@ -769,6 +790,7 @@ import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-fu
     MapTools()
     Save()
     ToggleMapTools()
+    DoTooltip()
   }
 
   /**

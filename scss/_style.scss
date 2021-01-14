@@ -347,18 +347,19 @@ body {
 .mess-style {
   display: block;
   font-size: 12px;
-  padding-left: 24px;
+  line-height: 1.3em;
+  padding-left: 20px;
   position: relative;
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 
   span {
     
     &.mess-icon { 
       position: absolute;
       left: 0;
-      top: 1px;
-      width: 18px;
+      top: -2px;
+      width: 16px;
 
       img {
         margin: 0;
@@ -368,5 +369,17 @@ body {
 
   &.__info-text {
 
+  }
+}
+
+div[data-tippy-root] {
+  line-height: normal;
+  
+  > * {
+    padding: 4px 6px;
+    border-radius: 3px;
+    color: #FFF;
+    font-weight: normal;
+    font-size: 11px;
   }
 }
