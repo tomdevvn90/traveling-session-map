@@ -23,7 +23,7 @@ export const shadeColor = ( color, percent ) => {
   return "#"+RR+GG+BB;
 } 
 
-export const randomGeo = ( center, radius = 1000 ) => {
+export const randomGeo = ( center, radius = 2000 ) => {
   var y0 = center[0] // center.latitude;
   var x0 = center[1] // center.longitude;
   var rd = radius / 111300;
@@ -38,9 +38,5 @@ export const randomGeo = ( center, radius = 1000 ) => {
 
   var xp = x / Math.cos(y0);
 
-  return [ y + y0, xp + x0 ]
-  // return {
-  //   'latitude': y + y0,
-  //   'longitude': xp + x0
-  // };
+  return [ y + y0, xp + x0 ]; // latitude, longitude
 }

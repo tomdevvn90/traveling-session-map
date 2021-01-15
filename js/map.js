@@ -2,7 +2,7 @@
  * Map 
  */
 
-import { shadeColor } from './helpers'
+import { shadeColor, randomGeo } from './helpers'
 import { GetFavCityByCat, GlobalTrendsFilterSetup } from './map-global-trends-func'
 
 /**
@@ -34,7 +34,7 @@ import tippy from 'tippy.js'
    * Map
    */
   let MapToolsWrap = $( '.map-tools-container' )
-  let MapCenter = [-53.842, 34.691];
+  let MapCenter = [ -53.842, 34.691 ];
   let MapZoom = 1.95;
   let MapLayers = [
     () => {
@@ -63,18 +63,15 @@ import tippy from 'tippy.js'
           for( let i = 0; i <= (Step - 1); i++ ) {
             FillColorRank.push( i )
             let ColorRank = (i == 0) ? Color : shadeColor( Color, ((i * 4) * -1) )
-            
             FillColorRank.push( [ 'to-color', ColorRank ] )
           }
         } else {
           for( let i = 0; i <= (Step - 1); i++ ) {
             FillColorRank.push( (Max / Step) * i )
             let ColorRank = (i == 0) ? Color : shadeColor( Color, ((i * 4) * -1) )
-
             FillColorRank.push( [ 'to-color', ColorRank ] )
           }
         }
-
         return FillColorRank
       }
 
@@ -87,8 +84,9 @@ import tippy from 'tippy.js'
         },
         paint: {
           'fill-color': [ 'interpolate', ['linear'], ['get', 'countedRank'], ...FillColorRankRender( FillColorPrimaty, RankStep, max ) ],
-          'fill-opacity': [ 'match', ['get', 'countedRank'], [0], 0, 1 ],
+          'fill-opacity': [ 'match', ['get', 'countedRank'], [0], 0, .8 ],
         },
+        'fill-opacity': 0.4,
       }
     },
   ]
@@ -106,16 +104,19 @@ import tippy from 'tippy.js'
     center: MapCenter,
     zoom: MapZoom,
     attributionControl: false,
-  } );
+  } )
 
   Map.addControl(
-    new mapboxgl.AttributionControl({
+    new mapboxgl.AttributionControl( {
       customAttribution: '<a href="https://travelingsession.com/" target="_blank";">© My Travel Sessions</a>',
-    })
-  );
-
+    } )
+  )
+  
+  /**
+   * Have issue reset all script apply for layer
+   */
   const SwitchMapStyle = ( Style ) => { 
-    Map.setStyle( Style );
+    Map.setStyle( Style )
   }
 
   const LoadStateMapData = async () => {
@@ -488,10 +489,11 @@ import tippy from 'tippy.js'
     let el = BuildMarkerUI( {
       icon: dataUI.Icon,
     } )
-
+    // console.log( randomGeo( data.geometry.coordinates ) )
+    let Geo = randomGeo( data.geometry.coordinates.map( ( num ) => { return parseFloat( num ) } ) )
     return new mapboxgl.Marker( el )
-      .setLngLat( data.geometry.coordinates )
-      .addTo( Map );
+      .setLngLat( Geo )
+      .addTo( Map )
   }
 
   const GeoCoderFieldHandle = () => {
