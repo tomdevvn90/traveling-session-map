@@ -48,7 +48,7 @@ import tippy from 'tippy.js'
         },
         paint: {
           'fill-color': ['case', ['boolean', ['feature-state', 'hover'], false], ColorSelected, '#ffffff'],
-          // 'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.8, 0.001],
+          'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.8, 0.001],
         },
         'fill-opacity': 0.4,
       }
@@ -74,7 +74,7 @@ import tippy from 'tippy.js'
             FillColorRank.push( [ 'to-color', ColorRank ] )
           }
         }
-        console.log( FillColorRank )
+
         return FillColorRank
       }
 
@@ -87,7 +87,7 @@ import tippy from 'tippy.js'
         },
         paint: {
           'fill-color': [ 'interpolate', ['linear'], ['get', 'countedRank'], ...FillColorRankRender( FillColorPrimaty, RankStep, max ) ],
-          // 'fill-opacity': [ 'match', ['get', 'countedRank'], [0], 0, 1 ],
+          'fill-opacity': [ 'match', ['get', 'countedRank'], [0], 0, 1 ],
         },
       }
     },

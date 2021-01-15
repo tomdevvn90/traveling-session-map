@@ -2,7 +2,7 @@
  * Helpers 
  */
 
-export const shadeColor = (color, percent) => {
+export const shadeColor = ( color, percent ) => {
 
   var R = parseInt(color.substring(1,3),16);
   var G = parseInt(color.substring(3,5),16);
@@ -22,3 +22,25 @@ export const shadeColor = (color, percent) => {
 
   return "#"+RR+GG+BB;
 } 
+
+export const randomGeo = ( center, radius = 1000 ) => {
+  var y0 = center[0] // center.latitude;
+  var x0 = center[1] // center.longitude;
+  var rd = radius / 111300;
+
+  var u = Math.random();
+  var v = Math.random();
+
+  var w = rd * Math.sqrt(u);
+  var t = 2 * Math.PI * v;
+  var x = w * Math.cos(t);
+  var y = w * Math.sin(t);
+
+  var xp = x / Math.cos(y0);
+
+  return [ y + y0, xp + x0 ]
+  // return {
+  //   'latitude': y + y0,
+  //   'longitude': xp + x0
+  // };
+}
