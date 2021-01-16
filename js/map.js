@@ -57,7 +57,7 @@ import tippy from 'tippy.js'
       let FillColorPrimaty = '#EFAA7B' 
       let RankStep = 8
 
-      const FillColorRankRender = ( Color, Step, Max ) => {
+      const ColorRankRender = ( Color, Step, Max ) => {
         let FillColorRank = [] 
         if( Max <= Step ) {
           for( let i = 0; i <= (Step - 1); i++ ) {
@@ -75,7 +75,7 @@ import tippy from 'tippy.js'
         return FillColorRank
       }
 
-      return {
+      return { 
         id: 'WorldCountriesPopular',
         type: 'fill',
         source: 'CountriesPopular',
@@ -83,7 +83,7 @@ import tippy from 'tippy.js'
           'visibility': 'none'
         },
         paint: {
-          'fill-color': [ 'interpolate', ['linear'], ['get', 'countedRank'], ...FillColorRankRender( FillColorPrimaty, RankStep, max ) ],
+          'fill-color': [ 'interpolate', ['linear'], ['get', 'countedRank'], ...ColorRankRender( FillColorPrimaty, RankStep, max ) ],
           'fill-opacity': [ 'match', ['get', 'countedRank'], [0], 0, .8 ],
         },
         'fill-opacity': 0.4,
