@@ -15,6 +15,21 @@ export const GetFavCityByCat = async ( Tax ) => {
   } )
 }
 
+export const BuildFavTopLocation = ( Locations ) => {
+  let Template = Locations.map( ( item, index ) => {
+    return `<li>  
+      <span>${ index + 1 }. </span>  
+      <label>${ item.place_name } | ${ Object.values( item.coordinates ).join() }</label>
+    </li>`
+  } ).join( '' )
+  
+  return `
+  <h4 class="top-global-trends-heading">Top Global Trends</h4>
+  <ul class="tsm-top-fav-list">
+    ${ Template }
+  </ul>`
+}
+
 export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
   const Result = await GetFavCityByCat( TaxName )
   const Color = Button.data( 'color' )
@@ -26,6 +41,8 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
     type: 'FeatureCollection',
     features: []
   }
+
+  let TopList = Result.top.length ? BuildFavTopLocation( Result.top ) : ''
 
   Result.data.map( ( item ) => {
     Source.features.push( {
@@ -81,6 +98,8 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
     '__show:heatmap' () {
       Map.setLayoutProperty( `${ TaxName }-heat`, 'visibility' )
       Map.setLayoutProperty( `${ TaxName }-point`, 'visibility' )
+
+      $( '#Fav-City-List' ).html( TopList )
     },
     '__hide:heatmap' () {
       Map.setLayoutProperty( `${ TaxName }-heat`, 'visibility', 'none' )
@@ -90,6 +109,7 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
   
   Button.on( 'click', function() {
     let self = $( this )
+    $( '#Fav-City-List' ).empty()
 
     self
       .toggleClass( '__is-active' )
@@ -98,6 +118,7 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
       .removeClass( '__is-active' )
 
     $( '._fav-filter-item' ).each( function() {
+
       if( $( this ).hasClass( '__is-active' ) ) {
         $( this ).trigger( '__show:heatmap' )
       } else {

@@ -50,7 +50,8 @@ function tsm_ajax_get_fav_city_by_cat() {
 
   wp_send_json( [
     'success' => true,
-    'data' => $FavCity
+    'data' => $FavCity,
+    'top' => tsm_get_top_location_by_cat( $Slug )
   ] );
 }
 

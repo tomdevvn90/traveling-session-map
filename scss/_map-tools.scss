@@ -354,3 +354,22 @@
     }
   }
 }
+
+.top-global-trends-heading {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.tsm-top-fav-list {
+
+  li {
+    font-size: 14px;
+    // font-weight: 500;
+    padding: 10px 0;
+    border-bottom: solid 1px #eee;
+
+    span {
+      font-weight: 500;
+    }
+  }
+}

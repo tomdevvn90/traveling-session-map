@@ -362,3 +362,54 @@ function tsm_build_countries_count( $data = [] ) {
 
     return $countries_count;
 }
+
+function tms_custom_query_group_by_filter( $groupby ) {
+    global $wpdb;
+    $groupby .= ', ' . $wpdb->postmeta . '.meta_key = "place_name"';
+    return $groupby;
+}
+
+/**
+ * Get location by category
+ * 
+ * @param String $cat_slug
+ * @return 
+ */
+function tsm_get_top_location_by_cat( $cat_slug = '' ) {
+    add_filter( 'posts_groupby', 'tms_custom_query_group_by_filter' ); 
+
+    $term = get_term_by('slug', $cat_slug, 'favorite-city-cat');
+    $result = new WP_Query( [
+        'post_type' => 'favorite-city',
+        'post_status' => 'publish',
+        'posts_per_page' => 3,
+        'meta_key' => 'place_name',
+        // 'fields' => 'ids',
+        'tax_query' => [
+            [
+                'taxonomy' => 'favorite-city-cat',
+                'field' => 'term_id',
+                'terms' => $term->term_id,
+            ]
+        ]
+    ] );
+    
+    remove_filter('posts_groupby', 'tms_custom_query_group_by_filter');
+    wp_reset_query();
+
+    if( count( $result->posts ) <= 0 ) { return []; }
+    return array_map( function( $p ) {
+        return [
+            'ID' => $p->ID,
+            'place_name' => get_field( 'place_name', $p->ID ),
+            'coordinates' => get_field( 'coordinates', $p->ID ),
+        ];
+    }, $result->posts );
+}
+
+add_action( 'init', function() { return; 
+    $result = tsm_get_top_location_by_cat( 'city-where-you-spend-the-least' );
+    echo '<pre>';
+    print_r( $result );
+    echo '</pre>';
+}, 100 );
