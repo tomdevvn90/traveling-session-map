@@ -19,7 +19,7 @@ export const BuildFavTopLocation = ( Locations ) => {
   let Template = Locations.map( ( item, index ) => {
     return `<li>  
       <span>${ index + 1 }. </span>  
-      <label>${ item.place_name } | ${ Object.values( item.coordinates ).join() }</label>
+      <label title="${ Object.values( item.coordinates ).join() }">${ item.place_name }</label>
     </li>`
   } ).join( '' )
   
