@@ -25,6 +25,7 @@ if( ! function_exists( 'trss_map_scripts' ) ) {
         wp_localize_script( 'trss-map-js', 'TRSS_MAP_OBJ', apply_filters( 'trss_map/js_object', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'mapbox_world_countries_json_url' => TRSSMAP_URI . '/data/world-countries5.geojson',
+            'map_colors' => get_field( 'map_colors', 'options' ),
             'uid' => get_current_user_id(),
         ] ) );
     }

@@ -54,27 +54,29 @@ import tippy from 'tippy.js'
       }
     },
     ( min, max ) => {
-      let OldColorRank = ["#E45B3E", "#F7A155", "#F7D267", "#019384", "#7915D4", "#2BD4EC", "#333333"]; // ["#E45B3E", "#F7A155", "#F7D267", "#019384", "#7915D4", "#2BD4EC"]
+      
+      let OldColorRank = TRSS_MAP_OBJ.map_colors ? TRSS_MAP_OBJ.map_colors.map( item => item.color ) : ["#E45B3E", "#F7A155", "#F7D267", "#019384", "#7915D4", "#2BD4EC", "#333333"]; // ["#E45B3E", "#F7A155", "#F7D267", "#019384", "#7915D4", "#2BD4EC"]
       let FillColorPrimaty = '#EFAA7B' 
       let RankStep = OldColorRank.length - 1; // 8
-
+      
       const ColorRankRender = ( Color, Step, Max ) => {
         let FillColorRank = [] 
         if( Max <= Step ) {
-          for( let i = 0; i <= (Step - 1); i++ ) {
+          for( let i = 1; i <= Step; i++ ) {
             FillColorRank.push( i )
             let ColorRank = (i == 0) ? Color : shadeColor( Color, ((i * 4) * -1) )
             // FillColorRank.push( [ 'to-color', ColorRank ] )
-            FillColorRank.push( [ 'to-color', OldColorRank[ i ] ] )
+            FillColorRank.push( [ 'to-color', OldColorRank[ i - 1 ] ] )
           }
         } else {
-          for( let i = 0; i <= (Step - 1); i++ ) {
+          for( let i = 1; i <= Step; i++ ) {
             FillColorRank.push( (Max / Step) * i )
             let ColorRank = (i == 0) ? Color : shadeColor( Color, ((i * 4) * -1) )
             // FillColorRank.push( [ 'to-color', ColorRank ] )
-            FillColorRank.push( [ 'to-color', OldColorRank[ i ] ] )
+            FillColorRank.push( [ 'to-color', OldColorRank[ i - 1 ] ] )
           }
         }
+
         return FillColorRank
       }
 
