@@ -1,20 +1,20 @@
-<?php 
+<?php
 /**
- * Favo list search template  
+ * Favo list search template
  */
 ?>
 
-<? forEach( $favo_list_search as $index => $item ) : ?>
+<?php forEach( $favo_list_search as $index => $item ) : ?>
   <div class="__fav-item">
     <div class="myGallery">
-      <span><?= $item[ 'label' ] ?></span>
-      <img src="<?= $item[ 'icon' ] ?>" alt="#">
-    </div> 
-    <div 
-      id="<?= $item[ 'id' ] ?>" 
-      class="<?= $item[ 'class' ] ?> __mapbox-geocode-field-container" 
-      data-item-key="<?= $item[ 'key' ] ?>" 
-      data-tax-slug="<?= $item[ 'slug' ] ?>"
-      data-icon="<?= $item[ 'icon' ] ?>"></div>
+      <span><?php echo  $item[ 'label' ] ?></span>
+      <img src="<?php echo  $item[ 'icon' ] ?>" alt="#">
+    </div>
+    <div
+      id="<?php echo  $item[ 'id' ] ?>"
+      class="<?php echo  $item[ 'class' ] ?> __mapbox-geocode-field-container"
+      data-item-key="<?php echo  $item[ 'key' ] ?>"
+      data-tax-slug="<?php echo  $item[ 'slug' ] ?>"
+      data-icon="<?php echo  $item[ 'icon' ] ?>"></div>
   </div>
-<? endforeach; ?>
+<?php endforeach; ?>

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile:scss": "sass scss/main.scss:dist/tsm.css --style compressed --watch",
-    "dev": "(start npm run compile:scss & start webpack -w) || (npm run compile:scss & webpack -w)"
+    "dev": "(start npm run compile:scss & start webpack -w) || (npm run compile:scss & webpack -w)",
+    "build": "npx webpack --config webpack.config.js"
   },
   "keywords": [],
   "author": "",
@@ -30,5 +31,8 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "dependencies": {
+    "tippy.js": "^6.2.7"
+  }
 }

@@ -1,5 +1,5 @@
 /**
- * Map 
+ * Map
  */
 
 import { shadeColor, randomGeo } from './helpers'
@@ -19,7 +19,7 @@ import tippy from 'tippy.js'
   mapboxgl.accessToken = 'pk.eyJ1IjoidmluY2Vuem8tbSIsImEiOiJja2RyN3lyaGIxYms3MnJ0YWQzY285b2hjIn0.ABcpXPdCt_vOXrLx0ox1bg'
 
   /**
-   * Global Variables 
+   * Global Variables
    */
   let SelectState = null
   let GeoCoderFields = []
@@ -29,7 +29,7 @@ import tippy from 'tippy.js'
   let FavCityFilterCache = {}
   let FavCityListContainer = null
   let CountriesPopular = []
-  
+
   /**
    * Map
    */
@@ -54,13 +54,13 @@ import tippy from 'tippy.js'
       }
     },
     ( min, max ) => {
-      
+
       let OldColorRank = TRSS_MAP_OBJ.map_colors ? TRSS_MAP_OBJ.map_colors.map( item => item.color ) : ["#E45B3E", "#F7A155", "#F7D267", "#019384", "#7915D4", "#2BD4EC", "#333333"]; // ["#E45B3E", "#F7A155", "#F7D267", "#019384", "#7915D4", "#2BD4EC"]
-      let FillColorPrimaty = '#EFAA7B' 
+      let FillColorPrimaty = '#EFAA7B'
       let RankStep = OldColorRank.length - 1; // 8
-      
+
       const ColorRankRender = ( Color, Step, Max ) => {
-        let FillColorRank = [] 
+        let FillColorRank = []
         if( Max <= Step ) {
           for( let i = 1; i <= Step; i++ ) {
             FillColorRank.push( i )
@@ -80,7 +80,7 @@ import tippy from 'tippy.js'
         return FillColorRank
       }
 
-      return { 
+      return {
         id: 'WorldCountriesPopular',
         type: 'fill',
         source: 'CountriesPopular',
@@ -104,7 +104,7 @@ import tippy from 'tippy.js'
   }
 
   let Map = new mapboxgl.Map( {
-    container: 'traveling-session-map', 
+    container: 'traveling-session-map',
     style: MapStyle.light,
     center: MapCenter,
     zoom: MapZoom,
@@ -116,11 +116,11 @@ import tippy from 'tippy.js'
       customAttribution: '<a href="https://travelingsession.com/" target="_blank";">© My Travel Sessions</a>',
     } )
   )
-  
+
   /**
    * Have issue reset all script apply for layer
    */
-  const SwitchMapStyle = ( Style ) => { 
+  const SwitchMapStyle = ( Style ) => {
     Map.setStyle( Style )
   }
 
@@ -161,12 +161,12 @@ import tippy from 'tippy.js'
      * Set countedRank
      */
     StateData.features.map( ( State ) => {
-      
+
       if( CountriesPopular[ parseInt( State.id ) ] ) {
         let properties = State.properties
         let geometry = State.geometry
         properties.countedRank = CountriesPopular[ parseInt( State.id ) ] || 0
-        
+
         CountriesPopularSource.features.push( {
           id: State.id,
           type: 'Feature',
@@ -188,7 +188,6 @@ import tippy from 'tippy.js'
   }
 
   const MapInit = async () => {
-
     /**
      * Set
      */
@@ -198,7 +197,7 @@ import tippy from 'tippy.js'
      * Get data
      */
     const StateData = await LoadStateMapData()
-    
+
     /**
      * Countries Popular Handle
      */
@@ -228,14 +227,14 @@ import tippy from 'tippy.js'
      */
     $( '.__btn-countries-popular' ).on( 'click', function() {
       $( this ).toggleClass( '__is-active' )
-      MapLayerDisplayControl( false, false, $( this ).hasClass( '__is-active' ), true ) 
+      MapLayerDisplayControl( false, false, $( this ).hasClass( '__is-active' ), true )
     } )
 
     /**
-     * Filter 
+     * Filter
      */
     // $( '._fav-filter-item' ).on( 'click', FavCityFilter )
-    
+
     $( '._fav-filter-item' ).each( function() {
       let Button = $( this )
       let TaxName = Button.val()
@@ -249,7 +248,7 @@ import tippy from 'tippy.js'
     $( '#trss-map-page' ).removeClass( '__lock-init' )
 
     /**
-     * 
+     *
      */
     AutoOpenMapToolDesktop()
   }
@@ -262,7 +261,7 @@ import tippy from 'tippy.js'
   const SelectCountry = ( e ) => {
     let StateID = e.features[0].id
     let _inc = CountrySelected.includes( StateID )
-      
+
     if( true == _inc ) {
       CountrySelected.splice( CountrySelected.indexOf( StateID ) , 1 )
       Map.setFeatureState( { source: 'states', id: StateID }, { hover: !_inc } )
@@ -292,7 +291,7 @@ import tippy from 'tippy.js'
       const CacheDataMap = JSON.parse( CacheDataMap_String )
       Country = CacheDataMap.CountrySelected
       Favorite = CacheDataMap.FavoriteCity
-    } 
+    }
 
     /**
      * Load data by DB
@@ -315,7 +314,7 @@ import tippy from 'tippy.js'
     if( Result.data.FavoriteCity ) {
       Favorite = Result.data.FavoriteCity
     }
-    
+
     return { Country, Favorite };
   }
 
@@ -331,9 +330,9 @@ import tippy from 'tippy.js'
     if( CountrySelected.length ) {
       // Update select
       $( 'select[name=states][multiple=multiple]' ).val( CountrySelected ).trigger( 'change' )
-      
+
       // Update map
-      CountrySelected.map( ( StateID ) => {  
+      CountrySelected.map( ( StateID ) => {
         Map.setFeatureState({ source: 'states', id: StateID }, { hover: true });
       } )
     }
@@ -345,7 +344,7 @@ import tippy from 'tippy.js'
         $( `.__mapbox-geocode-field-container[data-item-key=${ key }]` ).trigger( '__MakeMarkerDefault:MyFav', [ data ] )
       } )
     }
-    
+
     // Update number state selected
     UpdateTotalCountriesNumber()
   }
@@ -367,7 +366,7 @@ import tippy from 'tippy.js'
 
       $( this )
         .addClass( 'active' )
-        .siblings() 
+        .siblings()
         .removeClass( 'active' )
 
       MapToolsWrap
@@ -377,7 +376,7 @@ import tippy from 'tippy.js'
         .removeClass( '__is-active' )
 
       /**
-       * Callback 
+       * Callback
        */
       if( MapToolsWrap.onChangeTabCallback && MapToolsWrap.onChangeTabCallback.length ) {
         MapToolsWrap.onChangeTabCallback.map( func => {
@@ -391,11 +390,11 @@ import tippy from 'tippy.js'
 
   /**
    * Map layers display control
-   * 
-   * @param {*} MyCountries 
-   * @param {*} MyFav 
-   * @param {*} CountriesPopular 
-   * @param {*} FavFilter 
+   *
+   * @param {*} MyCountries
+   * @param {*} MyFav
+   * @param {*} CountriesPopular
+   * @param {*} FavFilter
    */
   const MapLayerDisplayControl = ( MyCountries = true, MyFav = true, CountriesPopular = false, FavFilter = false ) => {
     /**
@@ -416,15 +415,15 @@ import tippy from 'tippy.js'
     if( MyFav ) {
       $( '.__mapbox-geocode-field-container' ).each( function() {
         let Marker = $( this ).data( 'marker' )
-        if( ! Marker ) return 
-  
+        if( ! Marker ) return
+
         $( Marker._element ).css( 'display', 'block' )
       } )
     } else {
       $( '.__mapbox-geocode-field-container' ).each( function() {
         let Marker = $( this ).data( 'marker' )
-        if( ! Marker ) return 
-  
+        if( ! Marker ) return
+
         $( Marker._element ).css( 'display', 'none' )
       } )
     }
@@ -451,13 +450,13 @@ import tippy from 'tippy.js'
       FavCityFilterMarker.map( ( Marker ) => {
         $( Marker._element ).css( 'display', 'block' )
       } )
-  
+
       $( '.mapboxgl-popup' ).show()
     } else {
       FavCityFilterMarker.map( ( Marker ) => {
         $( Marker._element ).css( 'display', 'none' )
       } )
-  
+
       $( '.mapboxgl-popup' ).hide()
     }
     /**
@@ -513,7 +512,6 @@ import tippy from 'tippy.js'
 
       if( OldMarker ) OldMarker.remove()
       c.data( 'marker', Marker )
-
       // Save Fav City
       let FavCity = {
         tax_slug: TaxSlug,
@@ -551,15 +549,15 @@ import tippy from 'tippy.js'
       Geocoder.on( 'clear', e => { _onClear( e, Container ) } )
 
       Container.on( {
-        '__MakeMarkerDefault:MyFav' ( e, GeocoderData ) { 
+        '__MakeMarkerDefault:MyFav' ( e, GeocoderData ) {
           // console.log( GeocoderData )
           let _Marker = MakeMarker( GeocoderData, {
             Icon: Container.data( 'icon' )
-          } )  
+          } )
           Container.data( 'marker', _Marker )
           Container.find( 'input.mapboxgl-ctrl-geocoder--input' ).val( GeocoderData.place_name )
         }
-      } ) 
+      } )
 
       Container.data( 'geocoder-obj', Geocoder )
       GeoCoderFields.push( Geocoder )
@@ -567,10 +565,10 @@ import tippy from 'tippy.js'
   }
 
   /**
-   * State select field handle 
-   * 
-   * @param {*} option 
-   * @param {*} value 
+   * State select field handle
+   *
+   * @param {*} option
+   * @param {*} value
    */
   const SelectStateHandle = ( option, value ) => {
     const StateID = parseInt( option.value )
@@ -604,7 +602,7 @@ import tippy from 'tippy.js'
     return Result
   }
 
-  const BuildFavCityListUI = ( FavItem, Maker, index ) => { 
+  const BuildFavCityListUI = ( FavItem, Maker, index ) => {
     let HtmlInner = `
     <span class="__inc-num">${ index + 1 }</span>
     <div class="fav-entry">
@@ -654,13 +652,14 @@ import tippy from 'tippy.js'
         .setLngLat( item.geometry.coordinates )
         .setPopup( popup )
         .addTo( Map )
-        
+
       FavCityFilterMarker.push( Marker )
       BuildFavCityListUI( item, Marker, index )
     } )
   }
 
   const FavCityFilter = async function( e ) {
+
     e.preventDefault()
     let button = $( this )
     let [ Slug ] = [ button.val() ]
@@ -677,7 +676,7 @@ import tippy from 'tippy.js'
       alert( 'Error!' )
       return;
     }
-    
+
     /**
      * Remove avaiable marker old
      */
@@ -754,7 +753,7 @@ import tippy from 'tippy.js'
   }
 
   const ToggleMapTools = () => {
-    $( '.__toggle-map-tool' ).on( 'click', function( e ) { 
+    $( '.__toggle-map-tool' ).on( 'click', function( e ) {
       e.preventDefault()
       let self = $( this )
 
@@ -769,8 +768,8 @@ import tippy from 'tippy.js'
   }
 
   const AutoOpenMapToolDesktop = () => {
-    
-    if( $( w ).innerWidth() <= 980 ) return 
+
+    if( $( w ).innerWidth() <= 980 ) return
     $( '.__toggle-map-tool' ).addClass( 'active' )
     $( '#trss-map-page' ).addClass( '__map-tools-show' )
   }
@@ -809,7 +808,7 @@ import tippy from 'tippy.js'
    * Browser load completed
    */
   $( w ).on( 'load', () => {
-    
+
   } )
 
 } )( window, jQuery )

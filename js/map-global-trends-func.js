@@ -1,7 +1,7 @@
 /**
  * Golobal trends helpers
  */
-
+import { shadeColor, randomGeo } from './helpers'
 export const GetFavCityByCat = async ( Tax ) => {
   return await $.ajax( {
     type: 'POST',
@@ -17,12 +17,12 @@ export const GetFavCityByCat = async ( Tax ) => {
 
 export const BuildFavTopLocation = ( Locations ) => {
   let Template = Locations.map( ( item, index ) => {
-    return `<li>  
-      <span>${ index + 1 }. </span>  
+    return `<li>
+      <span>${ index + 1 }. </span>
       <label title="${ Object.values( item.coordinates ).join() }">${ item.place_name }</label>
     </li>`
   } ).join( '' )
-  
+
   return `
   <h4 class="top-global-trends-heading">Top Global Trends</h4>
   <ul class="tsm-top-fav-list">
@@ -33,8 +33,8 @@ export const BuildFavTopLocation = ( Locations ) => {
 export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
   const Result = await GetFavCityByCat( TaxName )
   const Color = Button.data( 'color' )
-  
-  if( true != Result.success || Result.data.length == 0 ) return 
+
+  if( true != Result.success || Result.data.length == 0 ) return
 
   let SourceID = `source-${ TaxName }`
   let Source = {
@@ -45,6 +45,7 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
   let TopList = Result.top.length ? BuildFavTopLocation( Result.top ) : ''
 
   Result.data.map( ( item ) => {
+    item.geometry.coordinates = randomGeo( item.geometry.coordinates.map( ( num ) => { return parseFloat( num ) } ) )
     Source.features.push( {
       type: 'Feature',
       properties: {},
@@ -57,7 +58,10 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
    */
   Map.addSource( SourceID, {
     'type': 'geojson',
-    'data': Source
+    'data': Source,
+    cluster : true,
+    clusterMaxZoom: 7, // Max zoom to cluster points on
+    clusterRadius: 25 // Radius of each cluster when clustering points (defaults to 50)
   } )
 
   Map.addLayer( {
@@ -82,18 +86,29 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
     type: 'circle',
     source: SourceID,
     // minzoom: 7,
+    //filter: ['has', 'point_count'],
     layout: {
       'visibility': 'none'
     },
     paint: {
-      'circle-color': Color, // '#990033',
-      'circle-stroke-color': 'white',
-      'circle-stroke-width': 1,
+       'circle-color': Color, // '#990033',
+       'circle-stroke-color': 'white',
+       'circle-stroke-width': 1,
+        'circle-radius': [
+            'step',
+            ['get', 'point_count'],
+            10,
+            50,
+            15,
+            375,
+            20
+        ]
     }
   }, 'waterway-label' )
 
-  Button.removeClass( '__btn-disable' ) 
-  
+
+  Button.removeClass( '__btn-disable' )
+
   Button.on( {
     '__show:heatmap' () {
       Map.setLayoutProperty( `${ TaxName }-heat`, 'visibility' )
@@ -106,7 +121,7 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
       Map.setLayoutProperty( `${ TaxName }-point`, 'visibility', 'none' )
     }
   } )
-  
+
   Button.on( 'click', function() {
     let self = $( this )
     $( '#Fav-City-List' ).empty()
@@ -118,7 +133,6 @@ export const GlobalTrendsFilterSetup = async ( { Button, TaxName, Map } ) => {
       .removeClass( '__is-active' )
 
     $( '._fav-filter-item' ).each( function() {
-
       if( $( this ).hasClass( '__is-active' ) ) {
         $( this ).trigger( '__show:heatmap' )
       } else {
