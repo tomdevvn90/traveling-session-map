@@ -371,8 +371,13 @@ function tms_custom_query_group_by_filter( $groupby ) {
 
 function tms_custom_request_filter($sql, $query) {
     global $wpdb;
-    $sql = str_replace($wpdb->posts.'.*',$wpdb->posts.'.*, '.$wpdb->postmeta.'.meta_value AS place_name',$sql);
+    $sql = str_replace($wpdb->posts.'.*',$wpdb->posts.'.*, '.$wpdb->postmeta.'.meta_value AS place_name,COUNT(*) AS total_vote',$sql);
     return $sql;
+}
+
+function tms_custom_posts_orderby($orderby_statement) {
+    $orderby_statement = "total_vote DESC";
+    return $orderby_statement;
 }
 
 /**
@@ -385,6 +390,7 @@ function tsm_get_top_location_by_cat( $cat_slug = '' ) {
 
     add_filter( 'posts_request', 'tms_custom_request_filter', 10, 2 );
     add_filter( 'posts_groupby', 'tms_custom_query_group_by_filter' );
+    add_filter('posts_orderby', 'tms_custom_posts_orderby');
 
     $term = get_term_by('slug', $cat_slug, 'favorite-city-cat');
     $result = new WP_Query( [
@@ -392,26 +398,19 @@ function tsm_get_top_location_by_cat( $cat_slug = '' ) {
         'post_status' => 'publish',
         'posts_per_page' => 3,
         'meta_key' => 'place_name',
-        // 'fields' => 'ids',
+        // 'fields' => 'ids'   ,
         'tax_query' => [
             [
                 'taxonomy' => 'favorite-city-cat',
                 'field' => 'term_id',
                 'terms' => $term->term_id,
             ]
-        ],
-        "meta_query"=>array(
-            'relation'=>"OR",
-            array(
-                'key'=>"place_name",
-                'value' => '',
-                'compare'=> "!="
-            )
-        ),
+        ]
     ] );
 
     remove_filter( 'posts_request', 'tms_custom_request_filter', 10, 2 );
     remove_filter('posts_groupby', 'tms_custom_query_group_by_filter');
+    remove_filter('posts_orderby', 'tms_custom_posts_orderby');
     wp_reset_query();
 
     if( count( $result->posts ) <= 0 ) { return []; }
