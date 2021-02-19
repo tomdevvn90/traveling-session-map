@@ -47,7 +47,7 @@ function trss_plugin_footer_import_css_javascript() {
 
 /**
  * Favorite Search Location Template
- * 
+ *
  */
 function tsm_favo_list_search_html() {
     $favo_list_search = [
@@ -150,8 +150,8 @@ function tsm_favo_list_filter_html() {
 }
 
 /**
- * Search Favorite City 
- * 
+ * Search Favorite City
+ *
  * @param array $args
  */
 function tms_search_fav_city( $args = [] ) {
@@ -175,9 +175,9 @@ function tms_search_fav_city( $args = [] ) {
 
 /**
  * Inser new favorite
- * 
- * @param string $skey 
- * @param array $data 
+ *
+ * @param string $skey
+ * @param array $data
  */
 function tsm_insert_post_fav( $skey, $data ) {
     $userID = get_current_user_id();
@@ -205,9 +205,9 @@ function tsm_insert_post_fav( $skey, $data ) {
 
 /**
  * Update favorite
- * 
+ *
  * @param int $post_id
- * @param array $data 
+ * @param array $data
  */
 function tsm_update_post_fav( $postID, $data ) {
     $userID = get_current_user_id();
@@ -234,7 +234,7 @@ function tsm_save_fav_city( $data ) {
     $userID = get_current_user_id();
 
     # Insert or Update Fav
-    array_map( function( $key, $item ) use ( $userID ) { 
+    array_map( function( $key, $item ) use ( $userID ) {
         $result = tms_search_fav_city( [
             's_key' => $key,
             'user_id' => $userID
@@ -244,7 +244,7 @@ function tsm_save_fav_city( $data ) {
             # Add new
             tsm_insert_post_fav( $key, $item );
         } else {
-            # Edit 
+            # Edit
             tsm_update_post_fav( $result->ID, $item );
         }
     }, array_keys( $data ), array_values( $data ) );
@@ -267,8 +267,8 @@ function tsm_save_fav_city( $data ) {
 }
 
 /**
- * Get user map data 
- * 
+ * Get user map data
+ *
  * @param int $userID
  */
 function tsm_load_user_map_data( $userID ) {
@@ -280,7 +280,7 @@ function tsm_load_user_map_data( $userID ) {
 
 /**
  * Get Favorite City by cat
- * 
+ *
  * @param string $slug
  */
 function tsm_get_fav_city_by_cat( $slug = '' ) {
@@ -319,7 +319,7 @@ function tsm_get_fav_city_by_cat( $slug = '' ) {
 
         return $item;
     }, $result ) : [];
-} 
+}
 
 function tsm_svg_icon( $name ) {
     $icons = require( TRSSMAP_DIR . '/inc/svg.php' );
@@ -365,18 +365,26 @@ function tsm_build_countries_count( $data = [] ) {
 
 function tms_custom_query_group_by_filter( $groupby ) {
     global $wpdb;
-    $groupby .= ', ' . $wpdb->postmeta . '.meta_key = "place_name"';
+    $groupby = 'place_name';
     return $groupby;
+}
+
+function tms_custom_request_filter($sql, $query) {
+    global $wpdb;
+    $sql = str_replace($wpdb->posts.'.*',$wpdb->posts.'.*, '.$wpdb->postmeta.'.meta_value AS place_name',$sql);
+    return $sql;
 }
 
 /**
  * Get location by category
- * 
+ *
  * @param String $cat_slug
- * @return 
+ * @return
  */
 function tsm_get_top_location_by_cat( $cat_slug = '' ) {
-    add_filter( 'posts_groupby', 'tms_custom_query_group_by_filter' ); 
+
+    add_filter( 'posts_request', 'tms_custom_request_filter', 10, 2 );
+    add_filter( 'posts_groupby', 'tms_custom_query_group_by_filter' );
 
     $term = get_term_by('slug', $cat_slug, 'favorite-city-cat');
     $result = new WP_Query( [
@@ -391,9 +399,18 @@ function tsm_get_top_location_by_cat( $cat_slug = '' ) {
                 'field' => 'term_id',
                 'terms' => $term->term_id,
             ]
-        ]
+        ],
+        "meta_query"=>array(
+            'relation'=>"OR",
+            array(
+                'key'=>"place_name",
+                'value' => '',
+                'compare'=> "!="
+            )
+        ),
     ] );
-    
+
+    remove_filter( 'posts_request', 'tms_custom_request_filter', 10, 2 );
     remove_filter('posts_groupby', 'tms_custom_query_group_by_filter');
     wp_reset_query();
 
@@ -407,7 +424,7 @@ function tsm_get_top_location_by_cat( $cat_slug = '' ) {
     }, $result->posts );
 }
 
-add_action( 'init', function() { return; 
+add_action( 'init', function() { return;
     $result = tsm_get_top_location_by_cat( 'city-where-you-spend-the-least' );
     echo '<pre>';
     print_r( $result );
