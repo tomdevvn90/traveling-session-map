@@ -80,8 +80,8 @@ function tsm_favo_list_search_html() {
             'id' => 'search3',
             'class' => '_s3',
             'icon' => TRSSMAP_URI . 'img/icons-04.png',
-            'label' => 'City where you spend the least',
-            'slug' => 'city-where-you-spend-the-least',
+            'label' => 'Most Affordable City',
+            'slug' => 'most-affordable-city',
         ],
         [
             'key' => 's4',
@@ -127,8 +127,8 @@ function tsm_favo_list_filter_html() {
         ],
         [
             'icon' => TRSSMAP_URI . 'img/icons-04.png',
-            'label' => 'City where you spend the least',
-            'slug' => 'city-where-you-spend-the-least',
+            'label' => 'Most Affordable City',
+            'slug' => 'most-affordable-city',
             'color' => '#2d9384',
         ],
         [
