@@ -162,10 +162,12 @@ function tms_search_fav_city( $args = [] ) {
             [
                 'key' => 's_key',
                 'value' => $args[ 's_key' ],
+                'compare' => '='
             ],
             [
-                'key' => 'user_id',
+                'key' => 'user_id_custom',
                 'value' => $args[ 'user_id' ],
+                'compare' => '='
             ],
         ],
     ];
@@ -194,6 +196,7 @@ function tsm_insert_post_fav( $skey, $data ) {
 
     update_field( 's_key', $skey, $postID );
     update_field( 'user_id', $userID, $postID );
+    update_field( 'user_id_custom', $userID, $postID );
     update_field( 'place_name', $data[ 'place_name' ], $postID );
     update_field( 'coordinates', [
         'longitude' => $data[ 'geometry' ][ 'coordinates' ][ 0 ],

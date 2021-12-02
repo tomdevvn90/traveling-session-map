@@ -28,7 +28,7 @@
      */
     define( 'TRSSMAP_DIR', plugin_dir_path( __FILE__ ) );
     define( 'TRSSMAP_URI', plugin_dir_url( __FILE__ ) );
-    define( 'TRSSMAP_VER', '1.0.0' );
+    define( 'TRSSMAP_VER', '1.0.1' );
 }
 
 {
